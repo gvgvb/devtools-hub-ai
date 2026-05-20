@@ -1,0 +1,207 @@
+{
+  "site": {
+    "name": "DevTools Hub AI",
+    "baseUrl": "https://devtools-hub-ai.netlify.app"
+  },
+  "tools": [
+    {
+      "name": "JSON Formatter",
+      "desc": "Beautify and validate JSON data.",
+      "path": "/tools/json",
+      "category": "Standard",
+      "seoTitle": "Online JSON Formatter & Validator | DevTools Hub AI",
+      "seoDescription": "Format, validate, and prettify JSON instantly with the free online JSON formatter for developers and API debugging.",
+      "keywords": "json formatter, json validator, pretty print json, online json formatter",
+      "featured": true,
+      "trending": true,
+      "faqs": [
+        { "q": "Can I format JSON without logging in?", "a": "Yes. Our JSON formatter is free to use without any account or signup required." },
+        { "q": "Does it validate my JSON?", "a": "Yes. The tool checks for invalid JSON syntax and highlights formatting issues instantly." }
+      ]
+    },
+    {
+      "name": "JWT Decoder",
+      "desc": "Decode JWT tokens locally.",
+      "path": "/tools/jwt",
+      "category": "Standard",
+      "seoTitle": "Free JWT Decoder Online | DevTools Hub AI",
+      "seoDescription": "Decode JSON Web Tokens securely in your browser, inspect claims, and verify token structure without sending data to a server.",
+      "keywords": "jwt decoder, jwt token decoder, decode jwt online, jwt inspector",
+      "featured": true,
+      "trending": true,
+      "faqs": [
+        { "q": "Is my JWT data sent to a server?", "a": "No. JWT decoding is done locally in your browser, so your token never leaves your device." },
+        { "q": "Can I inspect the payload and header?", "a": "Yes. The tool shows both the header and payload details in a readable format." }
+      ]
+    },
+    {
+      "name": "AI Code Explainer",
+      "desc": "Understand complex code logic.",
+      "path": "/ai/explainer",
+      "category": "AI",
+      "seoTitle": "AI Code Explainer for Developers | DevTools Hub AI",
+      "seoDescription": "Paste code and get instant AI-powered explanations, logic summaries, and clearer insights for faster debugging and code reviews.",
+      "keywords": "ai code explainer, code explanation tool, explain code online, developer ai tool",
+      "featured": true,
+      "trending": true,
+      "faqs": [
+        { "q": "How does the AI explain my code?", "a": "The AI analyzes your code snippet and returns a natural-language summary of its logic and behavior." },
+        { "q": "Can it explain code in multiple languages?", "a": "Yes. The explainer supports major languages like JavaScript, Python, Java, and more." }
+      ]
+    },
+    {
+      "name": "AI Bug Fixer",
+      "desc": "Fix bugs and optimize code snippets.",
+      "path": "/ai/bug-fixer",
+      "category": "AI",
+      "seoTitle": "AI Bug Fixer Online | DevTools Hub AI",
+      "seoDescription": "Drop in buggy code and let our AI suggest fixes, improvements, and safer refactors to speed up your debugging workflow.",
+      "keywords": "ai bug fixer, fix code bugs, code debugging ai, online code fix tool",
+      "trending": true,
+      "faqs": [
+        { "q": "Will the tool rewrite my code?", "a": "The AI suggests fixes and optimized code snippets while preserving your original logic." },
+        { "q": "Does it support different programming languages?", "a": "Yes. It works with most common languages, including JavaScript, Python, and TypeScript." }
+      ]
+    },
+    {
+      "name": "AI Code Converter",
+      "desc": "Convert code between languages.",
+      "path": "/ai/converter",
+      "category": "AI",
+      "seoTitle": "AI Code Converter Online | DevTools Hub AI",
+      "seoDescription": "Convert code between languages instantly with AI, from JavaScript to Python, TypeScript, and more, while preserving behavior and structure.",
+      "keywords": "ai code converter, convert code online, code translation tool, language converter",
+      "latest": true,
+      "faqs": [
+        { "q": "Can I convert JavaScript to Python?", "a": "Yes. The AI converter supports many language pairs and preserves the original behavior." },
+        { "q": "Is the converted code production-ready?", "a": "The output is a strong starting point, but you should review it before production use." }
+      ]
+    },
+    {
+      "name": "AI Regex Gen",
+      "desc": "Generate regex from description.",
+      "path": "/ai/regex-gen",
+      "category": "AI",
+      "seoTitle": "AI Regex Generator | DevTools Hub AI",
+      "seoDescription": "Create accurate regular expressions from plain-language descriptions and test them instantly with sample input.",
+      "keywords": "ai regex generator, generate regex online, regex from description, regex assistant",
+      "latest": true,
+      "faqs": [
+        { "q": "How do I generate a regex?", "a": "Describe the text pattern you need, and the AI will produce a matching regular expression." },
+        { "q": "Can I test the regex before using it?", "a": "Yes. The page includes a live test environment to validate the generated regex." }
+      ]
+    },
+    {
+      "name": "Regex Tester",
+      "desc": "Test expressions in real-time.",
+      "path": "/tools/regex",
+      "category": "Standard",
+      "seoTitle": "Online Regex Tester | DevTools Hub AI",
+      "seoDescription": "Test and debug regular expressions instantly with sample input, highlighted matches, and real-time feedback.",
+      "keywords": "regex tester, regex debugger, test regular expressions, online regex tool",
+      "faqs": [
+        { "q": "Can I test regex patterns quickly?", "a": "Yes. Enter your pattern and sample text to see matches in real time." },
+        { "q": "Does it support advanced regex syntax?", "a": "Yes. You can test advanced groups, lookaheads, and other common regex features." }
+      ]
+    },
+    {
+      "name": "SQL Formatter",
+      "desc": "Tidy up SQL queries instantly.",
+      "path": "/tools/sql",
+      "category": "Standard",
+      "seoTitle": "Online SQL Formatter | DevTools Hub AI",
+      "seoDescription": "Format and clean SQL queries instantly for readability, debugging, and database development workflows.",
+      "keywords": "sql formatter, format sql query, beautify sql online, sql prettifier",
+      "trending": true,
+      "faqs": [
+        { "q": "Does this tool format SQL queries?", "a": "Yes. It formats SQL for better readability and consistent indentation." },
+        { "q": "Can I use it for complex queries?", "a": "Yes. The formatter handles nested queries, joins, and functions." }
+      ]
+    },
+    {
+      "name": "Diff Viewer",
+      "desc": "Compare two texts side by side.",
+      "path": "/tools/diff",
+      "category": "Standard",
+      "seoTitle": "Text Diff Viewer Online | DevTools Hub AI",
+      "seoDescription": "Compare two pieces of text side by side with highlighted differences for code, config, or document review.",
+      "keywords": "diff viewer, compare text online, text diff tool, side by side diff",
+      "faqs": [
+        { "q": "Can I compare code snippets?", "a": "Yes. Paste two versions of text or code to see differences clearly highlighted." },
+        { "q": "Is the comparison done locally?", "a": "Yes. Text comparison is performed in your browser without sending your data to a server." }
+      ]
+    },
+    {
+      "name": "Cron Expression Parser",
+      "desc": "Parse and explain cron schedules in plain English.",
+      "path": "/tools/cron",
+      "category": "Standard",
+      "seoTitle": "Cron Expression Parser | DevTools Hub AI",
+      "seoDescription": "Decode cron expressions and understand schedule timing instantly with a human-readable cron parser.",
+      "keywords": "cron parser, parse cron expression, cron schedule online, cron explanation",
+      "latest": true,
+      "faqs": [
+        { "q": "Can I parse cron schedules quickly?", "a": "Yes. Enter a cron expression and get a plain-language schedule description immediately." },
+        { "q": "Does the parser support common cron patterns?", "a": "Yes. It recognizes standard cron expressions and explains the schedule clearly." }
+      ]
+    },
+    {
+      "name": "Base64 Converter",
+      "desc": "Encode and decode Base64 data.",
+      "path": "/tools/base64",
+      "category": "Standard",
+      "seoTitle": "Base64 Encode/Decode Tool | DevTools Hub AI",
+      "seoDescription": "Encode and decode Base64 strings securely in your browser. Perfect for debugging tokens and text transformations.",
+      "keywords": "base64 encoder decoder, base64 converter, decode base64 online, encode base64 online",
+      "faqs": [
+        { "q": "Can I encode text to Base64?", "a": "Yes. Enter text and convert it instantly to Base64 formatting." },
+        { "q": "Can I decode an encoded string?", "a": "Yes. Paste Base64 data to decode it back into readable text." }
+      ]
+    },
+    {
+      "name": "Unit Converter",
+      "desc": "Pixels, REM, and Color conversions.",
+      "path": "/tools/unit-converter",
+      "category": "Standard",
+      "seoTitle": "Online Unit Converter for Developers | DevTools Hub AI",
+      "seoDescription": "Convert units such as pixels, rem, and colors instantly with a developer-friendly conversion tool.",
+      "keywords": "unit converter, pixel to rem converter, color converter, online unit conversion",
+      "faqs": [
+        { "q": "What units can I convert?", "a": "Convert between pixels, rem, em, and common color formats for front-end development." },
+        { "q": "Is it useful for design work?", "a": "Yes. It helps developers maintain consistent spacing and color conversions." }
+      ]
+    },
+    {
+      "name": "Password Generator",
+      "desc": "Generate secure passwords locally.",
+      "path": "/tools/password-gen",
+      "category": "Standard",
+      "seoTitle": "Secure Password Generator | DevTools Hub AI",
+      "seoDescription": "Create strong passwords instantly with a privacy-first generator that runs locally in your browser.",
+      "keywords": "password generator, secure password tool, generate password online, random password generator",
+      "latest": true,
+      "faqs": [
+        { "q": "Are passwords generated securely?", "a": "Yes. The generator uses browser-based randomness and does not store your passwords." },
+        { "q": "Can I customize password length?", "a": "Yes. Choose the length and generate a password instantly." }
+      ]
+    },
+    {
+      "name": "URL Tool",
+      "desc": "Encode and decode URLs safely.",
+      "path": "/tools/url",
+      "category": "Standard",
+      "seoTitle": "URL Encoder/Decoder Online | DevTools Hub AI",
+      "seoDescription": "Encode and decode URLs securely in your browser for safe link sharing and debugging.",
+      "keywords": "url encoder decoder, encode url online, decode url online, url tool",
+      "faqs": [
+        { "q": "Does this tool preserve special characters?", "a": "Yes. It encodes and decodes URL-safe characters correctly." },
+        { "q": "Is my URL data stored?", "a": "No. All URL conversions happen locally in your browser." }
+      ]
+    }
+  ],
+  "faqs": [
+    { "q": "Is my data safe?", "a": "Absolutely. All processing for non-AI tools (JSON, Base64, JWT) happens locally in your browser. Your data never touches our servers." },
+    { "q": "What AI model is powering the tools?", "a": "We use Llama 3.1 via the Groq API." },
+    { "q": "Can I use DevTools Hub AI offline?", "a": "Yes! Since it's a PWA, you can install it on your device and access most tools without an internet connection." }
+  ]
+}

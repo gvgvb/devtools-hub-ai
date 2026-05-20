@@ -1,0 +1,25 @@
+node_modules/
+dist/
+.env
+.env.local
+.env.*.local
+.vscode/
+.DS_Store
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+server.log
+server.pid
+lh-report.json
+REPORT.md
+
+# Ignore local dev artifacts and temporary files
+.venv/
+.vercel
+.vercel/
+.lighthouseci/
+coverage/
+
+# Ignore legacy/temporary build artifacts and scaffolds
+scripts/generate-tool-pages.cjs
+scripts/generate-tool-pages.js
