@@ -48,7 +48,7 @@
       margin-bottom: 8px;
       color: #cbd5e1;
     }
-    input[type="text"], textarea {
+    textarea {
       width: 100%;
       background-color: #0f172a;
       border: 1px solid #475569;
@@ -57,8 +57,6 @@
       padding: 12px;
       font-size: 14px;
       box-sizing: border-box;
-    }
-    textarea {
       height: 150px;
       resize: vertical;
       font-family: monospace;
@@ -113,20 +111,16 @@
   <div class="card">
     <h1>⚡ مؤرشف جوجل الفوري لـ DevTools Hub</h1>
     <div class="subtitle">
-      بسبب حجب اتصال خوادم جوجل عن سطر الأوامر (Terminal) في منطقتك، يمكنك استخدام هذه الصفحة لتشغيل عملية الأرشفة مباشرة من متصفحك (الذي يتصل بنجاح).
+      سجل الدخول باستخدام حساب جوجل الخاص بك ليتم أرشفة صفحات موقعك بالكامل تلقائياً وبأمان من المتصفح مباشرة.
     </div>
 
-    <div class="form-group">
-      <label for="token">1. ألصق رمز الوصول (Access Token):</label>
-      <input type="text" id="token" placeholder="يبدأ عادة بـ ya29.a0AfB2..." required>
-    </div>
-
-    <div class="form-group">
-      <label for="urls">2. الروابط المراد أرشفتها (رابط واحد في كل سطر):</label>
+    <div class="form-group" id="url-group" style="display: none;">
+      <label for="urls">الروابط المراد أرشفتها:</label>
       <textarea id="urls" placeholder="جاري تحميل الروابط من Sitemap تلقائياً..." required></textarea>
     </div>
 
-    <button id="start-btn">🚀 ابدأ الأرشفة الفورية الآن</button>
+    <button id="auth-btn">🔑 تسجيل الدخول وجلب الصلاحية من جوجل</button>
+    <button id="start-btn" style="display: none;">🚀 ابدأ الأرشفة الفورية الآن</button>
 
     <div id="status-card" class="status-container" style="display: none;">
       <h3 style="margin: 0 0 10px 0; font-size: 16px; color: #cbd5e1;">نتائج الأرشفة:</h3>
@@ -135,6 +129,22 @@
   </div>
 
   <script>
+    const CLIENT_ID = '1003576798943-42o448mpd1t9gqrd5pjp5f1ojl6teqqn.apps.googleusercontent.com';
+    const REDIRECT_URI = 'http://localhost:5173/instant-index.html';
+    
+    // Parse URL hash for access token
+    const params = new URLSearchParams(window.location.hash.substring(1));
+    const accessToken = params.get('access_token');
+    
+    const authBtn = document.getElementById('auth-btn');
+    const startBtn = document.getElementById('start-btn');
+    const urlGroup = document.getElementById('url-group');
+
+    authBtn.addEventListener('click', () => {
+      const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=https://www.googleapis.com/auth/indexing`;
+      window.location.href = authUrl;
+    });
+
     // Automatically load URLs from sitemap
     fetch('/sitemap.xml')
       .then(res => res.text())
@@ -150,68 +160,71 @@
       })
       .catch(err => {
         console.error('Failed to load sitemap.xml automatically:', err);
-        document.getElementById('urls').placeholder = 'فشل تحميل Sitemap تلقائياً. يرجى لصق الروابط هنا يدوياً.';
       });
 
-    document.getElementById('start-btn').addEventListener('click', async () => {
-      const token = document.getElementById('token').value.trim();
-      const urlsText = document.getElementById('urls').value.trim();
+    if (accessToken) {
+      authBtn.style.display = 'none';
+      startBtn.style.display = 'block';
+      urlGroup.style.display = 'block';
 
-      if (!token) {
-        alert('يرجى لصق الرمز Access Token أولاً!');
-        return;
-      }
-      if (!urlsText) {
-        alert('يرجى إضافة رابط واحد على الأقل!');
-        return;
-      }
+      // Clear the hash so the token isn't visible in the URL
+      window.history.replaceState(null, null, window.location.pathname);
 
-      const urls = urlsText.split('\n').map(u => u.trim()).filter(u => u.length > 0);
-      const statusCard = document.getElementById('status-card');
-      const statusList = document.getElementById('status-list');
-
-      statusCard.style.display = 'block';
-      statusList.innerHTML = '';
-
-      for (const url of urls) {
-        const item = document.createElement('div');
-        item.className = 'status-item';
-        item.innerHTML = `<span>${url}</span><span class="pending">جاري الإرسال...</span>`;
-        statusList.appendChild(item);
-        
-        // Scroll to bottom of list
-        statusList.scrollTop = statusList.scrollHeight;
-
-        try {
-          const res = await fetch('https://indexing.googleapis.com/v3/urlNotifications:publish', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify({
-              url: url,
-              type: 'URL_UPDATED'
-            })
-          });
-
-          if (res.ok) {
-            item.querySelector('span:last-child').className = 'success';
-            item.querySelector('span:last-child').textContent = '✅ تم بنجاح';
-          } else {
-            const errData = await res.json();
-            item.querySelector('span:last-child').className = 'failed';
-            item.querySelector('span:last-child').textContent = `❌ فشل: ${errData.error.message}`;
-          }
-        } catch (err) {
-          item.querySelector('span:last-child').className = 'failed';
-          item.querySelector('span:last-child').textContent = `❌ فشل اتصال الشبكة`;
+      startBtn.addEventListener('click', async () => {
+        const urlsText = document.getElementById('urls').value.trim();
+        if (!urlsText) {
+          alert('يرجى إضافة رابط واحد على الأقل!');
+          return;
         }
 
-        // Add 300ms delay to avoid rate limit spikes
-        await new Promise(r => setTimeout(r, 300));
-      }
-    });
+        const urls = urlsText.split('\n').map(u => u.trim()).filter(u => u.length > 0);
+        const statusCard = document.getElementById('status-card');
+        const statusList = document.getElementById('status-list');
+
+        statusCard.style.display = 'block';
+        statusList.innerHTML = '';
+        startBtn.disabled = true;
+        startBtn.textContent = '⏳ جاري الأرشفة...';
+
+        for (const url of urls) {
+          const item = document.createElement('div');
+          item.className = 'status-item';
+          item.innerHTML = `<span>${url}</span><span class="pending">جاري الإرسال...</span>`;
+          statusList.appendChild(item);
+          statusList.scrollTop = statusList.scrollHeight;
+
+          try {
+            const res = await fetch('https://indexing.googleapis.com/v3/urlNotifications:publish', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+              },
+              body: JSON.stringify({
+                url: url,
+                type: 'URL_UPDATED'
+              })
+            });
+
+            if (res.ok) {
+              item.querySelector('span:last-child').className = 'success';
+              item.querySelector('span:last-child').textContent = '✅ تم بنجاح';
+            } else {
+              const errData = await res.json();
+              item.querySelector('span:last-child').className = 'failed';
+              item.querySelector('span:last-child').textContent = `❌ فشل: ${errData.error.message}`;
+            }
+          } catch (err) {
+            item.querySelector('span:last-child').className = 'failed';
+            item.querySelector('span:last-child').textContent = `❌ فشل اتصال الشبكة`;
+          }
+          await new Promise(r => setTimeout(r, 300));
+        }
+
+        startBtn.disabled = false;
+        startBtn.textContent = '🚀 ابدأ الأرشفة الفورية الآن';
+      });
+    }
   </script>
 </body>
 </html>
