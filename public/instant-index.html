@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>مؤرشف صفحات جوجل الفوري</title>
+  <style>
+    body {
+      background-color: #0f172a;
+      color: #f8fafc;
+      font-family: system-ui, -apple-system, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+    .card {
+      background-color: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 16px;
+      padding: 40px;
+      max-width: 650px;
+      width: 100%;
+      box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.3);
+    }
+    h1 {
+      font-size: 26px;
+      margin-bottom: 10px;
+      color: #38bdf8;
+      text-align: center;
+    }
+    .subtitle {
+      color: #94a3b8;
+      font-size: 14px;
+      text-align: center;
+      margin-bottom: 30px;
+      line-height: 1.6;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #cbd5e1;
+    }
+    input[type="text"], textarea {
+      width: 100%;
+      background-color: #0f172a;
+      border: 1px solid #475569;
+      border-radius: 8px;
+      color: #f8fafc;
+      padding: 12px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+    textarea {
+      height: 150px;
+      resize: vertical;
+      font-family: monospace;
+    }
+    button {
+      background: linear-gradient(135deg, #38bdf8, #0284c7);
+      color: white;
+      border: none;
+      padding: 14px;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+      transition: all 0.2s;
+      margin-top: 10px;
+    }
+    button:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+    .status-container {
+      margin-top: 30px;
+      border-top: 1px solid #334155;
+      padding-top: 20px;
+    }
+    .status-list {
+      max-height: 250px;
+      overflow-y: auto;
+      border: 1px solid #475569;
+      border-radius: 8px;
+      padding: 12px;
+      background: #0f172a;
+      margin-top: 10px;
+    }
+    .status-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 4px;
+      border-bottom: 1px solid #1e293b;
+      font-size: 13px;
+    }
+    .status-item:last-child {
+      border-bottom: none;
+    }
+    .success { color: #4ade80; font-weight: bold; }
+    .failed { color: #f87171; font-weight: bold; }
+    .pending { color: #fbbf24; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>⚡ مؤرشف جوجل الفوري لـ DevTools Hub</h1>
+    <div class="subtitle">
+      بسبب حجب اتصال خوادم جوجل عن سطر الأوامر (Terminal) في منطقتك، يمكنك استخدام هذه الصفحة لتشغيل عملية الأرشفة مباشرة من متصفحك (الذي يتصل بنجاح).
+    </div>
+
+    <div class="form-group">
+      <label for="token">1. ألصق رمز الوصول (Access Token):</label>
+      <input type="text" id="token" placeholder="يبدأ عادة بـ ya29.a0AfB2..." required>
+    </div>
+
+    <div class="form-group">
+      <label for="urls">2. الروابط المراد أرشفتها (رابط واحد في كل سطر):</label>
+      <textarea id="urls" placeholder="جاري تحميل الروابط من Sitemap تلقائياً..." required></textarea>
+    </div>
+
+    <button id="start-btn">🚀 ابدأ الأرشفة الفورية الآن</button>
+
+    <div id="status-card" class="status-container" style="display: none;">
+      <h3 style="margin: 0 0 10px 0; font-size: 16px; color: #cbd5e1;">نتائج الأرشفة:</h3>
+      <div id="status-list" class="status-list"></div>
+    </div>
+  </div>
+
+  <script>
+    // Automatically load URLs from sitemap
+    fetch('/sitemap.xml')
+      .then(res => res.text())
+      .then(xmlText => {
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
+        const locs = xmlDoc.getElementsByTagName('loc');
+        const urls = [];
+        for (let i = 0; i < locs.length; i++) {
+          urls.push(locs[i].textContent);
+        }
+        document.getElementById('urls').value = urls.join('\n');
+      })
+      .catch(err => {
+        console.error('Failed to load sitemap.xml automatically:', err);
+        document.getElementById('urls').placeholder = 'فشل تحميل Sitemap تلقائياً. يرجى لصق الروابط هنا يدوياً.';
+      });
+
+    document.getElementById('start-btn').addEventListener('click', async () => {
+      const token = document.getElementById('token').value.trim();
+      const urlsText = document.getElementById('urls').value.trim();
+
+      if (!token) {
+        alert('يرجى لصق الرمز Access Token أولاً!');
+        return;
+      }
+      if (!urlsText) {
+        alert('يرجى إضافة رابط واحد على الأقل!');
+        return;
+      }
+
+      const urls = urlsText.split('\n').map(u => u.trim()).filter(u => u.length > 0);
+      const statusCard = document.getElementById('status-card');
+      const statusList = document.getElementById('status-list');
+
+      statusCard.style.display = 'block';
+      statusList.innerHTML = '';
+
+      for (const url of urls) {
+        const item = document.createElement('div');
+        item.className = 'status-item';
+        item.innerHTML = `<span>${url}</span><span class="pending">جاري الإرسال...</span>`;
+        statusList.appendChild(item);
+        
+        // Scroll to bottom of list
+        statusList.scrollTop = statusList.scrollHeight;
+
+        try {
+          const res = await fetch('https://indexing.googleapis.com/v3/urlNotifications:publish', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+              url: url,
+              type: 'URL_UPDATED'
+            })
+          });
+
+          if (res.ok) {
+            item.querySelector('span:last-child').className = 'success';
+            item.querySelector('span:last-child').textContent = '✅ تم بنجاح';
+          } else {
+            const errData = await res.json();
+            item.querySelector('span:last-child').className = 'failed';
+            item.querySelector('span:last-child').textContent = `❌ فشل: ${errData.error.message}`;
+          }
+        } catch (err) {
+          item.querySelector('span:last-child').className = 'failed';
+          item.querySelector('span:last-child').textContent = `❌ فشل اتصال الشبكة`;
+        }
+
+        // Add 300ms delay to avoid rate limit spikes
+        await new Promise(r => setTimeout(r, 300));
+      }
+    });
+  </script>
+</body>
+</html>

@@ -171,7 +171,7 @@ async function main() {
 
     console.log('\n🎉 Finished requesting indexing for all pages! Googlebot will crawl them shortly.');
   } catch (error) {
-    console.error('💥 Critical Error:', error.message);
+    console.error('💥 Critical Error:', error);
   }
 }
 
