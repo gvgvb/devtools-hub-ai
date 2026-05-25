@@ -1,14 +1,67 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { ToolShell } from './ToolShell';
 import { CopyButton } from './CopyButton';
 import { useKeyboardShortcut } from './useKeyboardShortcut';
 import { useToast } from './ToastContext';
 import { Columns, ArrowRightLeft, Trash2 } from 'lucide-react';
 
+type DiffLine = {
+  type: 'added' | 'removed' | 'unchanged';
+  line: string;
+  originalLine?: number;
+  modifiedLine?: number;
+};
+
+const buildLineDiff = (originalText: string, modifiedText: string): DiffLine[] => {
+  const originalLines = originalText.split('\n');
+  const modifiedLines = modifiedText.split('\n');
+  const dp = Array.from({ length: originalLines.length + 1 }, () =>
+    Array(modifiedLines.length + 1).fill(0) as number[]
+  );
+
+  for (let i = originalLines.length - 1; i >= 0; i -= 1) {
+    for (let j = modifiedLines.length - 1; j >= 0; j -= 1) {
+      dp[i][j] = originalLines[i] === modifiedLines[j]
+        ? dp[i + 1][j + 1] + 1
+        : Math.max(dp[i + 1][j], dp[i][j + 1]);
+    }
+  }
+
+  const diff: DiffLine[] = [];
+  let i = 0;
+  let j = 0;
+  while (i < originalLines.length && j < modifiedLines.length) {
+    if (originalLines[i] === modifiedLines[j]) {
+      diff.push({ type: 'unchanged', line: originalLines[i], originalLine: i + 1, modifiedLine: j + 1 });
+      i += 1;
+      j += 1;
+    } else if (dp[i + 1][j] >= dp[i][j + 1]) {
+      diff.push({ type: 'removed', line: originalLines[i], originalLine: i + 1 });
+      i += 1;
+    } else {
+      diff.push({ type: 'added', line: modifiedLines[j], modifiedLine: j + 1 });
+      j += 1;
+    }
+  }
+
+  while (i < originalLines.length) {
+    diff.push({ type: 'removed', line: originalLines[i], originalLine: i + 1 });
+    i += 1;
+  }
+
+  while (j < modifiedLines.length) {
+    diff.push({ type: 'added', line: modifiedLines[j], modifiedLine: j + 1 });
+    j += 1;
+  }
+
+  return diff;
+};
+
 export const DiffViewer = () => {
   const [original, setOriginal] = useState('');
   const [modified, setModified] = useState('');
   const { showToast } = useToast();
+  const diffLines = useMemo(() => buildLineDiff(original, modified), [original, modified]);
 
   const copyOutput = () => {
     if (!modified) return;
@@ -69,19 +122,25 @@ export const DiffViewer = () => {
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-bold flex items-center gap-2"><ArrowRightLeft size={20} className="text-indigo-400" /> Comparison Result</h3>
           {modified && (
-            <CopyButton value={modified} label="Copy modified diff output" onCopy={copyOutput} />
+            <CopyButton value={modified} label="Copy modified text" />
           )}
         </div>
         <div className="space-y-1 font-mono text-sm overflow-auto max-h-96">
           {original === modified ? (
             <div className="text-slate-500 italic py-10 text-center">No differences detected or fields are empty.</div>
           ) : (
-            modified.split('\n').map((line, i) => {
-              const isDifferent = !original.split('\n').includes(line);
+            diffLines.map((item, i) => {
+              const tone = item.type === 'added'
+                ? 'bg-emerald-500/10 text-emerald-300'
+                : item.type === 'removed'
+                ? 'bg-red-500/10 text-red-300'
+                : 'text-slate-500 opacity-70';
               return (
-                <div key={i} className={`flex gap-4 p-1 rounded ${isDifferent ? 'bg-emerald-500/10 text-emerald-400' : 'text-slate-500 opacity-50'}`}>
-                  <span className="w-8 shrink-0 text-right select-none opacity-30">{i + 1}</span>
-                  <span>{line || ' '}</span>
+                <div key={`${item.type}-${i}`} className={`grid grid-cols-[3rem_3rem_2rem_1fr] gap-3 rounded p-1 ${tone}`}>
+                  <span className="text-right select-none opacity-40">{item.originalLine ?? ''}</span>
+                  <span className="text-right select-none opacity-40">{item.modifiedLine ?? ''}</span>
+                  <span className="select-none font-bold">{item.type === 'added' ? '+' : item.type === 'removed' ? '-' : ' '}</span>
+                  <span className="whitespace-pre-wrap break-words">{item.line || ' '}</span>
                 </div>
               );
             })

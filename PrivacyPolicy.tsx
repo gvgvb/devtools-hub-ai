@@ -5,7 +5,7 @@ import { site } from './toolsData';
 
 const updatedAt = 'May 17, 2026';
 const description =
-  'Privacy Policy for DevTools Hub AI, covering local browser processing, AI requests, analytics, cookies, Google advertising disclosures, and user choices.';
+  'Privacy Policy for Zyphoric, covering local browser processing, AI requests, limited service logs, and user choices.';
 
 const schema = {
   '@context': 'https://schema.org',
@@ -36,19 +36,19 @@ export const PrivacyPolicy = () => {
         description={description}
         canonical={`${site.baseUrl}/privacy`}
         schema={schema}
-        keywords="privacy policy, Google AdSense privacy, developer tool privacy, browser-based tools"
+        keywords="privacy policy, developer tool privacy, browser-based tools, AI tool privacy"
       />
 
       <header className="space-y-5 border-b border-slate-200 pb-8 dark:border-slate-800">
         <p className="text-sm font-semibold uppercase tracking-[0.24em] text-blue-500">Legal</p>
-        <h1 className="text-4xl font-bold tracking-tight text-slate-950 dark:text-white md:text-5xl">Privacy Policy</h1>
+        <h1 className="text-4xl font-bold text-slate-950 dark:text-white md:text-5xl">Privacy Policy</h1>
         <p className="text-lg leading-relaxed text-slate-600 dark:text-slate-300">{description}</p>
         <p className="text-sm text-slate-500 dark:text-slate-500">Last updated: {updatedAt}</p>
       </header>
 
       <Section title="Overview">
         <p>
-          DevTools Hub AI is designed as a privacy-minded developer toolkit. Standard tools such as{' '}
+          Zyphoric is designed as a privacy-minded developer workspace. Standard tools such as{' '}
           <Link to="/tools/json" className="text-blue-500 hover:underline">JSON Formatter</Link>,{' '}
           <Link to="/tools/jwt" className="text-blue-500 hover:underline">JWT Decoder</Link>, and{' '}
           <Link to="/tools/base64" className="text-blue-500 hover:underline">Base64 Converter</Link> process your input in your browser.
@@ -62,23 +62,17 @@ export const PrivacyPolicy = () => {
         <ul className="list-disc space-y-3 pl-5">
           <li>Tool inputs you intentionally paste into the app, processed locally for standard utilities.</li>
           <li>AI prompts and code snippets you submit to AI features, transmitted to provide the requested result.</li>
-          <li>Basic technical data such as browser type, device information, error logs, and approximate usage events if analytics or monitoring are enabled.</li>
+          <li>Basic technical data such as browser type, device information, request timestamps, and error logs needed to operate and protect the service.</li>
           <li>Preferences stored locally in your browser, such as theme, recent tools, and favorite tools.</li>
         </ul>
       </Section>
 
-      <Section title="Cookies, ads, and third-party services">
+      <Section title="Cookies and third-party services">
         <p>
-          We may use cookies, local storage, or similar technologies to remember preferences, measure site reliability, and support advertising if Google AdSense or another ad provider is enabled.
+          We may use cookies, local storage, or similar technologies to remember preferences, keep the interface usable, and measure service reliability.
         </p>
         <p>
-          Third-party vendors, including Google, use cookies to serve ads based on a user's prior visits to this website or other websites. Google's use of advertising cookies enables Google and its partners to serve ads based on visits to this site and other sites on the internet.
-        </p>
-        <p>
-          Users may opt out of personalized advertising through{' '}
-          <a href="https://adssettings.google.com/" target="_blank" rel="noreferrer" className="text-blue-500 hover:underline">Google Ads Settings</a>. Users may also learn more about advertising cookies at{' '}
-          <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noreferrer" className="text-blue-500 hover:underline">Google Ads Privacy</a> or opt out of some third-party personalized advertising through{' '}
-          <a href="https://www.aboutads.info/choices/" target="_blank" rel="noreferrer" className="text-blue-500 hover:underline">aboutads.info</a>.
+          AI features send submitted prompts to the configured AI provider only when you choose to run an AI action. Standard utilities are designed to run locally in your browser when possible.
         </p>
       </Section>
 
@@ -87,13 +81,13 @@ export const PrivacyPolicy = () => {
           <li>Provide formatting, decoding, conversion, comparison, and AI-assisted developer features.</li>
           <li>Improve performance, reliability, abuse prevention, and product quality.</li>
           <li>Maintain security controls for AI endpoints and rate limits.</li>
-          <li>Comply with legal, policy, and advertising platform obligations.</li>
+          <li>Comply with legal and service policy obligations.</li>
         </ul>
       </Section>
 
       <Section title="Data retention and security">
         <p>
-          Standard tool inputs are not intentionally stored by DevTools Hub AI servers. AI requests may be temporarily processed by infrastructure providers to return results, enforce abuse controls, or diagnose service reliability.
+          Standard tool inputs are not intentionally stored by Zyphoric servers. AI requests may be temporarily processed by infrastructure providers to return results, enforce abuse controls, or diagnose service reliability.
         </p>
         <p>
           We use reasonable technical safeguards, but no internet service can guarantee absolute security. Review outputs before using them in production systems.
@@ -111,7 +105,7 @@ export const PrivacyPolicy = () => {
 
       <Section title="Children and policy updates">
         <p>
-          DevTools Hub AI is intended for developers and is not directed to children under 13. We may update this policy to reflect product, legal, or advertising changes. Material updates will be posted on this page.
+          Zyphoric is intended for developers and is not directed to children under 13. We may update this policy to reflect product, legal, or advertising changes. Material updates will be posted on this page.
         </p>
       </Section>
     </article>

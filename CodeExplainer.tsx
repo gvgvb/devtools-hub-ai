@@ -84,6 +84,7 @@ export const CodeExplainer = () => {
         <textarea
           value={code}
           onChange={(e) => setCode(e.target.value)}
+          aria-label="Code to explain"
           className="w-full h-64 bg-slate-950 border border-slate-800 rounded-2xl p-4 font-mono text-sm text-emerald-300 focus:ring-2 focus:ring-emerald-500 outline-none resize-none mb-4"
           placeholder="// Paste your code here..."
         />
@@ -108,7 +109,7 @@ export const CodeExplainer = () => {
         <div className="bg-slate-900 border border-slate-800 rounded-3xl p-8 relative group">
           <div className="flex justify-between items-center mb-6">
             <h3 className="text-xl font-semibold text-emerald-400">Analysis</h3>
-            <CopyButton value={explanation} label="Copy explanation" onCopy={copyToClipboard} />
+            <CopyButton value={explanation} label="Copy explanation" />
           </div>
           <div className="prose prose-invert max-w-none text-slate-300 whitespace-pre-wrap leading-relaxed">
             {explanation}

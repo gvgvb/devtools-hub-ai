@@ -22,26 +22,40 @@ export const PasswordGenerator = () => {
       lowercase: 'abcdefghijklmnopqrstuvwxyz',
       numbers: '0123456789',
       symbols: '!@#$%^&*()_+~`|}{[]:;?><,./-=',
-    };
+    } as const;
 
-    let availableChars = '';
-    if (options.uppercase) availableChars += charset.uppercase;
-    if (options.lowercase) availableChars += charset.lowercase;
-    if (options.numbers) availableChars += charset.numbers;
-    if (options.symbols) availableChars += charset.symbols;
+    const selectedCharsets = (Object.keys(charset) as Array<keyof typeof charset>)
+      .filter((key) => options[key]);
 
-    if (availableChars === '') {
+    if (selectedCharsets.length === 0) {
       setPassword('');
       return;
     }
 
-    const randomValues = new Uint32Array(length);
-    crypto.getRandomValues(randomValues);
-    let generated = '';
-    for (let i = 0; i < length; i++) {
-      generated += availableChars.charAt(randomValues[i] % availableChars.length);
+    const secureIndex = (max: number) => {
+      const limit = Math.floor(0x100000000 / max) * max;
+      const randomValue = new Uint32Array(1);
+      do {
+        crypto.getRandomValues(randomValue);
+      } while (randomValue[0] >= limit);
+      return randomValue[0] % max;
+    };
+
+    const pick = (chars: string) => chars.charAt(secureIndex(chars.length));
+    const availableChars = selectedCharsets.map((key) => charset[key]).join('');
+    const requiredChars = selectedCharsets.map((key) => pick(charset[key]));
+    const generatedChars = [...requiredChars];
+
+    while (generatedChars.length < Math.max(length, selectedCharsets.length)) {
+      generatedChars.push(pick(availableChars));
     }
-    setPassword(generated);
+
+    for (let i = generatedChars.length - 1; i > 0; i -= 1) {
+      const j = secureIndex(i + 1);
+      [generatedChars[i], generatedChars[j]] = [generatedChars[j], generatedChars[i]];
+    }
+
+    setPassword(generatedChars.slice(0, length).join(''));
   }, [length, options]);
 
   useEffect(() => {
@@ -106,7 +120,7 @@ export const PasswordGenerator = () => {
             <button onClick={generatePassword} aria-label="Generate new password" className="p-3 bg-slate-800 hover:bg-slate-700 rounded-xl text-slate-300 transition-all">
               <RefreshCw size={20} />
             </button>
-            <CopyButton value={password} label="Copy generated password" onCopy={copyToClipboard} />
+            <CopyButton value={password} label="Copy generated password" />
           </div>
         </div>
 

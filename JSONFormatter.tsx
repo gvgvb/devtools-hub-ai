@@ -24,8 +24,13 @@ export const JSONFormatter = () => {
   const { showToast } = useToast();
 
   useEffect(() => {
-    const saved = localStorage.getItem('json_history');
-    if (saved) setHistory(JSON.parse(saved));
+    try {
+      const saved = localStorage.getItem('json_history');
+      const parsed = saved ? JSON.parse(saved) : [];
+      setHistory(Array.isArray(parsed) ? parsed.filter((item): item is string => typeof item === 'string') : []);
+    } catch (error) {
+      setHistory([]);
+    }
     setHistoryLoaded(true);
   }, []);
 
@@ -40,24 +45,19 @@ export const JSONFormatter = () => {
       const parsed = JSON.parse(input);
       setOutput(JSON.stringify(parsed, null, minify ? 0 : 2));
       setError('');
-      
-      const newHistory = [input, ...history.filter(h => h !== input)].slice(0, 5);
-      setHistory(newHistory);
-      localStorage.setItem('json_history', JSON.stringify(newHistory));
+
+      setHistory((currentHistory) => {
+        const newHistory = [input, ...currentHistory.filter((item) => item !== input)].slice(0, 5);
+        try {
+          localStorage.setItem('json_history', JSON.stringify(newHistory));
+        } catch (storageError) {
+          // Formatting should still work if the browser refuses local storage.
+        }
+        return newHistory;
+      });
     } catch (err: any) {
       setError(err.message);
       setOutput('');
-    }
-  };
-
-  const copyToClipboard = async () => {
-    try {
-      const { writeToClipboard } = await import('./clipboard');
-      const ok = await writeToClipboard(output);
-      if (ok) showToast('JSON copied to clipboard!', 'success');
-      else showToast('Copy failed', 'error');
-    } catch (e) {
-      showToast('Copy failed', 'error');
     }
   };
 
@@ -142,7 +142,7 @@ export const JSONFormatter = () => {
                 </button>
               )}
               {output && (
-                <CopyButton value={output} label="Copy output" onCopy={() => showToast('JSON copied to clipboard!', 'success')} />
+                <CopyButton value={output} label="Copy output" />
               )}
             </div>
           </div>

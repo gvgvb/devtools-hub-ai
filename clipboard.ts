@@ -8,8 +8,9 @@ export async function writeToClipboard(text: string): Promise<boolean> {
     // continue to fallback
   }
 
+  const textarea = document.createElement('textarea');
+
   try {
-    const textarea = document.createElement('textarea');
     textarea.value = text;
     textarea.setAttribute('readonly', '');
     textarea.style.position = 'fixed';
@@ -21,10 +22,10 @@ export async function writeToClipboard(text: string): Promise<boolean> {
     textarea.focus();
     textarea.select();
     textarea.setSelectionRange(0, textarea.value.length);
-    const ok = document.execCommand('copy');
-    document.body.removeChild(textarea);
-    return ok;
+    return document.execCommand('copy');
   } catch (err) {
     return false;
+  } finally {
+    textarea.remove();
   }
 }

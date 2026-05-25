@@ -28,26 +28,21 @@ export const SQLFormatter = () => {
   );
 
   const formatSQL = () => {
-    // Simple regex-based formatter for production-ready look
-    let formatted = input
-      .replace(/\s+/g, ' ')
-      .replace(/\s?(SELECT|FROM|WHERE|LEFT JOIN|INNER JOIN|RIGHT JOIN|ORDER BY|GROUP BY|HAVING|LIMIT|INSERT INTO|VALUES|UPDATE|SET|DELETE|CREATE|ALTER|DROP|UNION|AND|OR)\s/gi, '\n$1 ')
-      .replace(/,/g, ',\n    ')
-      .trim();
-    setOutput(formatted);
-  };
+    const strings: string[] = [];
+    const protectedInput = input.replace(/'([^']|'')*'|"([^"]|"")*"/g, (match) => {
+      const token = `__SQL_STRING_${strings.length}__`;
+      strings.push(match);
+      return token;
+    });
 
-  const copyToClipboard = () => {
-    (async () => {
-      try {
-        const { writeToClipboard } = await import('./clipboard');
-        const ok = await writeToClipboard(output);
-        if (ok) showToast('SQL query copied!', 'success');
-        else showToast('Copy failed', 'error');
-      } catch (e) {
-        showToast('Copy failed', 'error');
-      }
-    })();
+    const formatted = protectedInput
+      .replace(/\s+/g, ' ')
+      .replace(/\s?(SELECT|FROM|WHERE|LEFT JOIN|INNER JOIN|RIGHT JOIN|FULL JOIN|ORDER BY|GROUP BY|HAVING|LIMIT|INSERT INTO|VALUES|UPDATE|SET|DELETE|CREATE|ALTER|DROP|UNION|AND|OR)\s/gi, '\n$1 ')
+      .replace(/,/g, ',\n    ')
+      .trim()
+      .replace(/__SQL_STRING_(\d+)__/g, (_, index) => strings[Number(index)] ?? '');
+
+    setOutput(formatted);
   };
 
   return (
@@ -91,7 +86,7 @@ export const SQLFormatter = () => {
           <div className="flex justify-between items-center px-2">
             <span className="text-sm font-medium text-slate-400 uppercase tracking-wider">Formatted Output</span>
             {output && (
-              <CopyButton value={output} label="Copy formatted SQL" onCopy={copyToClipboard} />
+              <CopyButton value={output} label="Copy formatted SQL" />
             )}
           </div>
           <div className="flex-1 bg-slate-950 border border-slate-800 rounded-2xl p-4 font-mono text-sm overflow-auto">

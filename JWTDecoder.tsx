@@ -114,7 +114,7 @@ export const JWTDecoder = () => {
             <div className="flex justify-between items-center">
               <h3 className="text-lg font-semibold text-slate-200">Header</h3>
               {header && (
-                <CopyButton value={header} label="Copy JWT header" onCopy={() => copyData(header)} />
+                <CopyButton value={header} label="Copy JWT header" />
               )}
             </div>
             <div className="bg-slate-950 border border-slate-800 rounded-2xl p-4 font-mono text-sm h-64 overflow-auto">
@@ -133,7 +133,7 @@ export const JWTDecoder = () => {
             <div className="flex justify-between items-center">
               <h3 className="text-lg font-semibold text-slate-200">Payload</h3>
               {payload && (
-                <CopyButton value={payload} label="Copy JWT payload" onCopy={() => copyData(payload)} />
+                <CopyButton value={payload} label="Copy JWT payload" />
               )}
             </div>
             <div className="bg-slate-950 border border-slate-800 rounded-2xl p-4 font-mono text-sm h-64 overflow-auto">

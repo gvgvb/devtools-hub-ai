@@ -3,6 +3,8 @@ dist/
 .env
 .env.local
 .env.*.local
+client_secret.json
+google*.html
 .vscode/
 .DS_Store
 npm-debug.log*
@@ -15,8 +17,6 @@ REPORT.md
 
 # Ignore local dev artifacts and temporary files
 .venv/
-.vercel
-.vercel/
 .lighthouseci/
 coverage/
 
@@ -26,7 +26,3 @@ scripts/generate-tool-pages.js
 
 # Local Netlify folder
 .netlify
-
-# Google Indexing API Key
-google-key.json
-client_secret.json

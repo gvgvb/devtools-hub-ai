@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Check, Copy } from 'lucide-react';
 import { useToast } from './ToastContext';
 import { writeToClipboard } from './clipboard';
@@ -11,7 +11,14 @@ interface CopyButtonProps {
 
 export const CopyButton = ({ value, label = 'Copy', onCopy }: CopyButtonProps) => {
   const [copied, setCopied] = useState(false);
+  const resetTimerRef = useRef<number | null>(null);
   const { showToast } = useToast();
+
+  useEffect(() => {
+    return () => {
+      if (resetTimerRef.current) window.clearTimeout(resetTimerRef.current);
+    };
+  }, []);
 
   const handleCopy = async () => {
     try {
@@ -19,8 +26,12 @@ export const CopyButton = ({ value, label = 'Copy', onCopy }: CopyButtonProps) =
       if (ok) {
         setCopied(true);
         onCopy?.();
-        showToast(`${label} copied to clipboard!`, 'success');
-        window.setTimeout(() => setCopied(false), 1800);
+        if (!onCopy) showToast(`${label} copied to clipboard!`, 'success');
+        if (resetTimerRef.current) window.clearTimeout(resetTimerRef.current);
+        resetTimerRef.current = window.setTimeout(() => {
+          setCopied(false);
+          resetTimerRef.current = null;
+        }, 1800);
       } else {
         throw new Error('clipboard fallback failed');
       }

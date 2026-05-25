@@ -21,6 +21,13 @@
   select {
     font: inherit;
   }
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    @apply outline-none ring-2 ring-blue-500 ring-offset-2 ring-offset-white dark:ring-offset-slate-950;
+  }
 }
 
 @keyframes subtle-pulse {
@@ -33,7 +40,6 @@
   animation: subtle-pulse 1.5s ease-in-out infinite;
 }
 
-/* Custom Scrollbar for Dark Mode */
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { @apply bg-slate-900; }
 ::-webkit-scrollbar-thumb { @apply bg-slate-800 rounded-full hover:bg-slate-700; }

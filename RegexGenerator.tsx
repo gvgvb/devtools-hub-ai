@@ -75,6 +75,7 @@ export const RegexGenerator = () => {
         <textarea
           value={description}
           onChange={(e) => setDescription(e.target.value)}
+          aria-label="Regex requirement description"
           className="w-full h-32 bg-slate-950 border border-slate-800 rounded-2xl p-4 text-slate-200 focus:ring-2 focus:ring-orange-500 outline-none resize-none mb-4"
           placeholder="e.g., Match a strong password with at least one uppercase letter and one symbol..."
         />
@@ -98,7 +99,7 @@ export const RegexGenerator = () => {
         <div className="bg-slate-900 border border-slate-800 rounded-3xl p-8 mt-6">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-xl font-semibold text-orange-400">Result</h3>
-            <CopyButton value={regex} label="Copy regex" onCopy={copyToClipboard} />
+            <CopyButton value={regex} label="Copy regex" />
           </div>
           <div className="prose prose-invert max-w-none text-slate-300 whitespace-pre-wrap font-mono bg-slate-950 p-4 rounded-xl">
             {regex}

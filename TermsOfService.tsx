@@ -5,7 +5,7 @@ import { site } from './toolsData';
 
 const updatedAt = 'May 17, 2026';
 const description =
-  'Terms of Service for DevTools Hub AI, including acceptable use, AI output review, service limits, advertising, and liability terms.';
+  'Terms of Service for Zyphoric, including acceptable use, AI output review, service limits, advertising, and liability terms.';
 
 const schema = {
   '@context': 'https://schema.org',
@@ -41,14 +41,14 @@ export const TermsOfService = () => {
 
       <header className="space-y-5 border-b border-slate-200 pb-8 dark:border-slate-800">
         <p className="text-sm font-semibold uppercase tracking-[0.24em] text-blue-500">Legal</p>
-        <h1 className="text-4xl font-bold tracking-tight text-slate-950 dark:text-white md:text-5xl">Terms of Service</h1>
+        <h1 className="text-4xl font-bold text-slate-950 dark:text-white md:text-5xl">Terms of Service</h1>
         <p className="text-lg leading-relaxed text-slate-600 dark:text-slate-300">{description}</p>
         <p className="text-sm text-slate-500 dark:text-slate-500">Last updated: {updatedAt}</p>
       </header>
 
       <Section title="Acceptance of terms">
         <p>
-          By using DevTools Hub AI, you agree to these terms and the <Link to="/privacy" className="text-blue-500 hover:underline">Privacy Policy</Link>. If you do not agree, do not use the website or its tools.
+          By using Zyphoric, you agree to these terms and the <Link to="/privacy" className="text-blue-500 hover:underline">Privacy Policy</Link>. If you do not agree, do not use the website or its tools.
         </p>
       </Section>
 
@@ -90,13 +90,13 @@ export const TermsOfService = () => {
 
       <Section title="Intellectual property">
         <p>
-          DevTools Hub AI branding, interface content, and site materials are owned by DevTools Hub AI or its licensors. Your own inputs remain yours, subject to the rights needed to process them and return results.
+          Zyphoric branding, interface content, and site materials are owned by Zyphoric or its licensors. Your own inputs remain yours, subject to the rights needed to process them and return results.
         </p>
       </Section>
 
       <Section title="No warranties and limitation of liability">
         <p>
-          The service is provided as is and as available. To the fullest extent permitted by law, DevTools Hub AI disclaims warranties and is not liable for indirect damages, lost data, security incidents caused by user misuse, or production issues caused by unverified outputs.
+          The service is provided as is and as available. To the fullest extent permitted by law, Zyphoric disclaims warranties and is not liable for indirect damages, lost data, security incidents caused by user misuse, or production issues caused by unverified outputs.
         </p>
       </Section>
 

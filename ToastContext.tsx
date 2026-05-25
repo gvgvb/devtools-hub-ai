@@ -14,12 +14,19 @@ type ToastContextValue = {
 
 const ToastContext = createContext<ToastContextValue | undefined>(undefined);
 
+const createToastId = () => {
+  if (typeof crypto !== 'undefined' && 'randomUUID' in crypto) {
+    return crypto.randomUUID();
+  }
+  return `toast-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+};
+
 export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
   const [toasts, setToasts] = useState<Toast[]>([]);
   const timeoutIds = useRef<number[]>([]);
 
   const showToast = useCallback((message: string, tone: ToastTone = 'info') => {
-    const id = crypto.randomUUID();
+    const id = createToastId();
     setToasts((current) => [...current, { id, message, tone }]);
     const timeoutId = window.setTimeout(() => {
       setToasts((current) => current.filter((toast) => toast.id !== id));

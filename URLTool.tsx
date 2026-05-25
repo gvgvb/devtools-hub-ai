@@ -82,7 +82,7 @@ export const URLTool = () => {
           <div className="flex justify-between items-center px-2">
             <span className="text-sm font-medium text-slate-400 uppercase tracking-wider">Output</span>
             {output && (
-              <CopyButton value={output} label="Copy URL output" onCopy={() => showToast('Copied!')} />
+              <CopyButton value={output} label="Copy URL output" />
             )}
           </div>
           <div className="flex-1 bg-slate-950 border border-slate-800 rounded-2xl p-4 font-mono text-sm overflow-auto text-blue-300 break-all whitespace-pre-wrap">

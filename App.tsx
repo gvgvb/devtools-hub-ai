@@ -1,4 +1,4 @@
-import { Navigate, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { Suspense, lazy } from 'react';
 import { MainLayout } from './MainLayout';
 
@@ -54,8 +54,6 @@ function App() {
           <Route path="contact" element={<Contact />} />
           <Route path="privacy" element={<PrivacyPolicy />} />
           <Route path="terms" element={<TermsOfService />} />
-          <Route path="privacy-policy" element={<Navigate to="/privacy" replace />} />
-          <Route path="terms-of-service" element={<Navigate to="/terms" replace />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

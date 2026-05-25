@@ -1,0 +1,95 @@
+{
+  "id": "/",
+  "name": "Zyphoric",
+  "short_name": "Zyphoric",
+  "description": "Zyphoric is a browser-native developer workspace with AI-enhanced utilities for formatting, decoding, and debugging.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ],
+  "background_color": "#0f2549",
+  "theme_color": "#0f2549",
+  "lang": "en-US",
+  "categories": [
+    "developer",
+    "productivity",
+    "utilities"
+  ],
+  "shortcuts": [
+    {
+      "name": "JSON Formatter",
+      "short_name": "JSON",
+      "description": "Format and validate JSON locally.",
+      "url": "/tools/json",
+      "icons": [
+        {
+          "src": "/zyphoric-icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "JWT Decoder",
+      "short_name": "JWT",
+      "description": "Decode JWT headers and payloads in the browser.",
+      "url": "/tools/jwt",
+      "icons": [
+        {
+          "src": "/zyphoric-icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "AI Code Explainer",
+      "short_name": "Explain",
+      "description": "Get AI-assisted explanations for code snippets.",
+      "url": "/ai/explainer",
+      "icons": [
+        {
+          "src": "/zyphoric-icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
+  ],
+  "icons": [
+    {
+      "src": "/zyphoric-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/zyphoric-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/zyphoric-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/zyphoric-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/zyphoric-social-preview.png",
+      "sizes": "1200x630",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Zyphoric social preview"
+    }
+  ]
+}

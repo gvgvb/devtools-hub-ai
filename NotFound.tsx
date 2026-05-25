@@ -1,17 +1,20 @@
 import { Link } from 'react-router-dom';
 import { SEO } from './SEO';
 import { Home, AlertTriangle, ArrowRight } from 'lucide-react';
-import { tools } from './toolsData';
+import { pageSchema, site, tools } from './toolsData';
 
 const recommended = tools.filter((tool) => ['/tools/json', '/tools/jwt', '/tools/regex', '/ai/explainer'].includes(tool.path));
+const notFoundDescription = 'This page could not be found. Return home or jump directly to popular developer tools.';
+const notFoundSchema = pageSchema('404 - Page Not Found', notFoundDescription, '/404');
 
 export const NotFound = () => {
-  return (
+      return (
     <div className="flex flex-col items-center justify-center py-20 text-center space-y-10 px-4 md:px-0 animate-fade-in">
         <SEO
         title="404 - Page Not Found"
-        description="This page could not be found. Return to the hub or jump directly to popular developer tools."
-        canonical="https://devtools-hubpro.netlify.app/404"
+        description={notFoundDescription}
+        canonical={`${site.baseUrl}/`}
+        schema={notFoundSchema}
         robots="noindex, follow"
       />
       <div className="relative">

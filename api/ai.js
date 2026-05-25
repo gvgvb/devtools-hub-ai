@@ -11,6 +11,16 @@ const quotaMap = new Map();
 const QUOTA_WINDOW_MS = 60 * 60 * 1000;
 const QUOTA_MAX = Number.parseInt(process.env.AI_QUOTA_MAX || '100', 10);
 
+// Periodic cleanup to prevent unbounded growth in long-running function instances.
+setInterval(() => {
+  const now = Date.now();
+  for (const [k, entry] of quotaMap.entries()) {
+    if (now - entry.windowStart > QUOTA_WINDOW_MS * 2) {
+      quotaMap.delete(k);
+    }
+  }
+}, Number.parseInt(process.env.QUOTA_CLEANUP_INTERVAL_MS || String(15 * 60 * 1000), 10));
+
 const consumeQuota = (key) => {
   const now = Date.now();
   const entry = quotaMap.get(key) || { count: 0, windowStart: now };
@@ -82,6 +92,7 @@ async function runAiEndpoint({ method, body, clientIp }) {
 
     if (!response.ok) {
       clearTimeout(timeout);
+      // Do not expose full provider payload in error responses/logs
       return { statusCode: 502, body: { error: data?.error?.message || 'AI provider returned an error.' } };
     }
 

@@ -2,13 +2,21 @@ const fs = require('fs');
 const path = require('path');
 
 const root = path.resolve(__dirname, '..');
+try {
+  require('dotenv').config({ path: path.join(root, '.env') });
+} catch (error) {
+  // dotenv is optional for build environments that provide variables directly.
+}
+
 const toolsPath = path.join(root, 'tools.json');
 const data = JSON.parse(fs.readFileSync(toolsPath, 'utf8'));
 
 const site = data.site || {};
-const siteName = site.name || 'DevTools Hub AI';
-const baseUrl = (site.baseUrl || 'https://devtools-hubpro.netlify.app').replace(/\/$/, '');
-const ogImage = `${baseUrl}/icon-512.png`;
+const siteName = site.name || 'Zyphoric';
+const baseUrl = (process.env.SITE_URL || site.baseUrl || 'https://zyphoric.netlify.app').replace(/\/$/, '');
+const ogImage = `${baseUrl}/zyphoric-og-image.png`;
+const socialImage = `${baseUrl}/zyphoric-social-preview.png`;
+const logoImage = `${baseUrl}/zyphoric-icon-512.png`;
 
 const withBrand = (title) => (title.includes(siteName) ? title : `${title} | ${siteName}`);
 
@@ -22,7 +30,7 @@ const staticRoutes = [
       'developer tools, ai developer tools, online json formatter, jwt decoder, regex tester, sql formatter',
     priority: '1.0',
     changefreq: 'weekly',
-    type: 'WebSite',
+    type: 'WebPage',
   },
   {
     path: '/articles',
@@ -37,21 +45,21 @@ const staticRoutes = [
   },
   {
     path: '/about',
-    title: 'About DevTools Hub AI',
+    title: 'About Zyphoric',
     description:
-      'Learn about DevTools Hub AI, a browser-first developer toolkit for JSON formatting, JWT decoding, regex testing, SQL formatting, and AI-assisted code workflows.',
+      'Learn about Zyphoric, a browser-first developer workspace for JSON formatting, JWT decoding, regex testing, SQL formatting, and AI-assisted code workflows.',
     keywords:
-      'about DevTools Hub AI, developer tools, AI developer utilities, browser developer tools',
+      'about Zyphoric, developer tools, AI developer utilities, browser developer tools',
     priority: '0.6',
     changefreq: 'yearly',
     type: 'AboutPage',
   },
   {
     path: '/contact',
-    title: 'Contact DevTools Hub AI',
+    title: 'Contact Zyphoric',
     description:
-      'Contact DevTools Hub AI for product support, privacy questions, bug reports, partnership requests, and general developer tool feedback.',
-    keywords: 'contact DevTools Hub AI, developer tools support, privacy contact, bug report',
+      'Contact Zyphoric for product support, privacy questions, bug reports, partnership requests, and general developer tool feedback.',
+    keywords: 'contact Zyphoric, developer tools support, privacy contact, bug report',
     priority: '0.6',
     changefreq: 'yearly',
     type: 'ContactPage',
@@ -60,9 +68,9 @@ const staticRoutes = [
     path: '/privacy',
     title: 'Privacy Policy',
     description:
-      'Privacy Policy for DevTools Hub AI, covering local browser processing, AI requests, analytics, cookies, Google advertising disclosures, and user choices.',
+      'Privacy Policy for Zyphoric, covering local browser processing, AI requests, limited service logs, and user choices.',
     keywords:
-      'privacy policy, Google AdSense privacy, developer tool privacy, browser-based tools',
+      'privacy policy, developer tool privacy, browser-based tools, AI tool privacy',
     priority: '0.5',
     changefreq: 'yearly',
     type: 'PrivacyPolicy',
@@ -71,7 +79,7 @@ const staticRoutes = [
     path: '/terms',
     title: 'Terms of Service',
     description:
-      'Terms of Service for DevTools Hub AI, including acceptable use, AI output review, service limits, advertising, and liability terms.',
+      'Terms of Service for Zyphoric, including acceptable use, AI output review, service limits, advertising, and liability terms.',
     keywords: 'terms of service, acceptable use policy, developer tools terms, AI tools terms',
     priority: '0.5',
     changefreq: 'yearly',
@@ -94,7 +102,7 @@ const notFoundRoute = {
   path: '/404',
   title: '404 - Page Not Found',
   description:
-    'This page could not be found. Return to the hub or jump directly to popular developer tools.',
+    'This page could not be found. Return home or jump directly to popular developer tools.',
   robots: 'noindex, follow',
   priority: '0.0',
   changefreq: 'yearly',
@@ -128,6 +136,52 @@ const breadcrumbSchema = (route) => ({
   ],
 });
 
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': `${baseUrl}/#organization`,
+  name: siteName,
+  url: `${baseUrl}/`,
+  logo: logoImage,
+};
+
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': `${baseUrl}/#website`,
+  name: siteName,
+  url: `${baseUrl}/`,
+  publisher: {
+    '@id': `${baseUrl}/#organization`,
+  },
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: `${baseUrl}/?q={search_term_string}`,
+    queryInput: 'required name=search_term_string',
+  },
+};
+
+const softwareApplicationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  '@id': `${baseUrl}/#software`,
+  name: siteName,
+  description:
+    'Browser-native developer utilities for formatting, decoding, debugging, converting, and AI-assisted code workflows.',
+  applicationCategory: 'DeveloperApplication',
+  operatingSystem: 'Web',
+  url: `${baseUrl}/`,
+  image: ogImage,
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
+  },
+  publisher: {
+    '@id': `${baseUrl}/#organization`,
+  },
+};
+
 const schemaForRoute = (route) => {
   const page = {
     '@context': 'https://schema.org',
@@ -136,20 +190,16 @@ const schemaForRoute = (route) => {
     description: route.description,
     url: urlFor(route.path),
     isPartOf: {
-      '@type': 'WebSite',
-      name: siteName,
-      url: `${baseUrl}/`,
+      '@id': `${baseUrl}/#website`,
+    },
+    publisher: {
+      '@id': `${baseUrl}/#organization`,
     },
   };
 
-  const schema = [page, breadcrumbSchema(route)];
+  const schema = [organizationSchema, websiteSchema, softwareApplicationSchema, page, breadcrumbSchema(route)];
 
   if (route.path === '/') {
-    page.potentialAction = {
-      '@type': 'SearchAction',
-      target: `${baseUrl}/?q={search_term_string}`,
-      queryInput: 'required name=search_term_string',
-    };
     if (data.faqs?.length) {
       schema.push({
         '@context': 'https://schema.org',
@@ -161,6 +211,31 @@ const schemaForRoute = (route) => {
         })),
       });
     }
+  }
+
+  if (route.tool) {
+    schema.push({
+      '@context': 'https://schema.org',
+      '@type': 'SoftwareApplication',
+      '@id': `${urlFor(route.path)}#software`,
+      name: route.tool.name,
+      applicationCategory: 'DeveloperApplication',
+      operatingSystem: 'Web',
+      url: urlFor(route.path),
+      description: route.description,
+      image: ogImage,
+      isPartOf: {
+        '@id': `${baseUrl}/#software`,
+      },
+      publisher: {
+        '@id': `${baseUrl}/#organization`,
+      },
+      offers: {
+        '@type': 'Offer',
+        price: '0',
+        priceCurrency: 'USD',
+      },
+    });
   }
 
   if (route.tool?.faqs?.length) {
@@ -183,6 +258,7 @@ module.exports = {
   siteName,
   baseUrl,
   ogImage,
+  socialImage,
   routes,
   notFoundRoute,
   urlFor,

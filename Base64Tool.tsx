@@ -116,7 +116,7 @@ export const Base64Tool = () => {
               <div className="relative">
                 <pre className="text-pink-300 whitespace-pre-wrap break-all">{output}</pre>
                 <div className="absolute top-4 right-4">
-                  <CopyButton value={output} label="Copy Base64 output" onCopy={copyToClipboard} />
+                  <CopyButton value={output} label="Copy Base64 output" />
                 </div>
               </div>
             ) : (

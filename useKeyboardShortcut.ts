@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 type Shortcut = {
   key: string;
@@ -13,6 +13,12 @@ export const useKeyboardShortcut = (
   callback: (event: KeyboardEvent) => void,
   enabled = true
 ) => {
+  const callbackRef = useRef(callback);
+
+  useEffect(() => {
+    callbackRef.current = callback;
+  }, [callback]);
+
   useEffect(() => {
     if (!enabled) return;
 
@@ -26,10 +32,10 @@ export const useKeyboardShortcut = (
       ) {
         return;
       }
-      callback(event);
+      callbackRef.current(event);
     };
 
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  }, [shortcut, callback, enabled]);
+  }, [shortcut.key, shortcut.ctrl, shortcut.shift, shortcut.alt, shortcut.meta, enabled]);
 };

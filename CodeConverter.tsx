@@ -59,6 +59,7 @@ export const CodeConverter = () => {
           <textarea
             value={code}
             onChange={(e) => setCode(e.target.value)}
+            aria-label="Source code to convert"
             className="w-full h-[400px] bg-slate-900 border border-slate-800 rounded-2xl p-4 font-mono text-sm text-blue-100 outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="// Paste source code here..."
           />
@@ -66,6 +67,7 @@ export const CodeConverter = () => {
             <select 
               value={targetLang} 
               onChange={(e) => setTargetLang(e.target.value)}
+              aria-label="Target programming language"
               className="flex-1 bg-slate-800 text-white rounded-xl px-4 py-3 outline-none border border-slate-700"
             >
               {['JavaScript', 'TypeScript', 'Python', 'Java', 'C++', 'Go', 'Rust', 'PHP'].map(lang => (
@@ -92,7 +94,7 @@ export const CodeConverter = () => {
           {result ? (
             <>
               <div className="absolute top-4 right-4">
-                <CopyButton value={result} label="Copy converted code" onCopy={copyToClipboard} />
+                <CopyButton value={result} label="Copy converted code" />
               </div>
               <pre className="whitespace-pre-wrap text-emerald-400">{result}</pre>
             </>

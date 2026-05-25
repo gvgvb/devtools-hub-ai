@@ -1,27 +1,29 @@
 {
-  "name": "devtools-hub-ai-root",
+  "name": "zyphoric",
   "private": true,
   "version": "0.0.0",
+  "description": "Zyphoric is a modern browser-native developer workspace with AI-enhanced code utilities for formatting, decoding, and debugging.",
+  "homepage": "https://zyphoric.netlify.app",
   "type": "module",
   "scripts": {
     "start": "node server.js",
     "serve": "node server.js",
     "dev": "concurrently \"npm run serve\" \"vite --host 0.0.0.0\"",
-    "netlify": "netlify dev",
-    "index-site": "node ./scripts/instant-index.cjs",
     "prebuild": "node ./scripts/generate-pwa-assets.cjs && node ./scripts/generate-seo-files.cjs",
     "build": "vite build",
     "postbuild": "node ./scripts/generate-static-pages.cjs",
     "typecheck": "tsc --noEmit",
     "preview": "vite preview"
   },
+  "engines": {
+    "node": ">=18"
+  },
   "dependencies": {
-    "@sentry/node": "^8.0.0",
+    "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "express-rate-limit": "^6.9.0",
     "helmet": "^7.0.0",
     "lucide-react": "^0.474.0",
-    "morgan": "^1.10.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.1.1"
@@ -33,12 +35,9 @@
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.20",
     "concurrently": "^8.2.0",
-    "dotenv": "^16.3.1",
-    "netlify-cli": "^26.0.2",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.7.2",
-    "vite": "^6.0.5",
-    "vite-plugin-pwa": "^0.21.2"
+    "vite": "^6.0.5"
   }
 }

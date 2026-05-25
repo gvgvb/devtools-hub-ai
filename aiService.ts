@@ -1,4 +1,4 @@
-const AI_PROXY_URL = '/api/ai';
+const AI_PROXY_URL = (import.meta.env.VITE_AI_PROXY_URL as string) || '/api/ai';
 
 export const askAI = async (
   prompt: string,
@@ -6,7 +6,7 @@ export const askAI = async (
   options?: { model?: string }
 ) => {
   const controller = new AbortController();
-  const timeoutMs = 15000; // client-side timeout
+  const timeoutMs = Number(import.meta.env.VITE_AI_TIMEOUT_MS) || 15000; // client-side timeout (ms)
   const timeout = setTimeout(() => controller.abort(), timeoutMs);
 
   let response: Response;

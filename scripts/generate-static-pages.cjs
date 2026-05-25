@@ -3,6 +3,7 @@ const path = require('path');
 const {
   baseUrl,
   ogImage,
+  socialImage,
   routes,
   notFoundRoute,
   urlFor,
@@ -57,7 +58,7 @@ const fallbackContent = (route) => {
     : '';
 
   return `<main class="mx-auto max-w-5xl px-6 py-12 text-slate-900 dark:text-slate-100">
-    <p class="text-sm font-semibold uppercase tracking-widest text-blue-500">DevTools Hub AI</p>
+    <p class="text-sm font-semibold uppercase tracking-widest text-blue-500">Zyphoric</p>
     <h1 class="mt-4 text-4xl font-bold">${escapeHtml(title)}</h1>
     <p class="mt-4 max-w-3xl text-lg leading-relaxed text-slate-600 dark:text-slate-400">${escapeHtml(
       route.description
@@ -83,12 +84,14 @@ const fallbackContent = (route) => {
 
 const seoBlock = (route) => {
   const title = withBrand(route.title);
-  const canonical = urlFor(route.path === '/404' ? '/404' : route.path);
+  const canonical = route.path === '/404' ? urlFor('/') : urlFor(route.path);
   const schema = schemaForRoute(route);
-  const robots = route.robots || 'index, follow';
+  const robots = route.robots || 'index, follow, max-image-preview:large';
   const keywords = route.keywords ? `    <meta name="keywords" content="${escapeHtml(route.keywords)}" />\n` : '';
 
   return `    <title>${escapeHtml(title)}</title>
+    <meta name="application-name" content="Zyphoric" />
+    <meta name="apple-mobile-web-app-title" content="Zyphoric" />
     <meta name="description" content="${escapeHtml(route.description)}" />
     <meta name="robots" content="${escapeHtml(robots)}" />
 ${keywords}    <link rel="canonical" href="${escapeHtml(canonical)}" />
@@ -96,17 +99,20 @@ ${keywords}    <link rel="canonical" href="${escapeHtml(canonical)}" />
     <meta property="og:description" content="${escapeHtml(route.description)}" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="${escapeHtml(canonical)}" />
-    <meta property="og:site_name" content="DevTools Hub AI" />
+    <meta property="og:site_name" content="Zyphoric" />
     <meta property="og:image" content="${ogImage}" />
-    <meta property="og:image:alt" content="DevTools Hub AI preview image" />
+    <meta property="og:image:secure_url" content="${ogImage}" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Zyphoric preview image" />
     <meta property="og:locale" content="en_US" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@DevToolsHubAI" />
-    <meta name="twitter:creator" content="@DevToolsHubAI" />
+    <meta name="twitter:url" content="${escapeHtml(canonical)}" />
     <meta name="twitter:title" content="${escapeHtml(title)}" />
     <meta name="twitter:description" content="${escapeHtml(route.description)}" />
-    <meta name="twitter:image" content="${ogImage}" />
-    <meta name="twitter:image:alt" content="DevTools Hub AI preview image" />
+    <meta name="twitter:image" content="${socialImage}" />
+    <meta name="twitter:image:alt" content="Zyphoric preview image" />
     <script type="application/ld+json" data-seo-schema="true">${JSON.stringify(schema)}</script>`;
 };
 
@@ -120,7 +126,10 @@ const renderPage = (route) => {
 const outputFilesForRoute = (routePath) => {
   if (routePath === '/') return [path.join(distDir, 'index.html')];
   const cleanPath = routePath.replace(/^\//, '');
-  return [path.join(distDir, cleanPath, 'index.html')];
+  return [
+    path.join(distDir, cleanPath, 'index.html'),
+    path.join(distDir, `${cleanPath}.html`),
+  ];
 };
 
 for (const route of routes) {
@@ -132,73 +141,4 @@ for (const route of routes) {
 
 fs.writeFileSync(path.join(distDir, '404.html'), renderPage(notFoundRoute), 'utf8');
 
-const redirectPage = (from, to) => {
-  const route = routes.find((item) => item.path === to) || {};
-  const title = route.title ? `Redirecting to ${route.title} | DevTools Hub AI` : 'Redirecting | DevTools Hub AI';
-  const description = route.description
-    ? `Redirecting to ${route.title}. ${route.description}`
-    : 'Redirecting to the canonical page.';
-  const canonical = urlFor(to);
-
-  const schema = {
-    '@context': 'https://schema.org',
-    '@type': 'WebPage',
-    name: title,
-    description,
-    url: `${baseUrl}${from}`,
-    isPartOf: {
-      '@type': 'WebSite',
-      name: 'DevTools Hub AI',
-      url: `${baseUrl}/`,
-    },
-  };
-
-  return `<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#0f172a" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <meta http-equiv="refresh" content="0; url=${to}" />
-    <title>${escapeHtml(title)}</title>
-    <meta name="description" content="${escapeHtml(description)}" />
-    <meta name="robots" content="noindex, follow" />
-    <link rel="canonical" href="${escapeHtml(canonical)}" />
-    <meta property="og:title" content="${escapeHtml(title)}" />
-    <meta property="og:description" content="${escapeHtml(description)}" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="${escapeHtml(canonical)}" />
-    <meta property="og:site_name" content="DevTools Hub AI" />
-    <meta property="og:image" content="${ogImage}" />
-    <meta property="og:image:alt" content="DevTools Hub AI preview image" />
-    <meta property="og:locale" content="en_US" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@DevToolsHubAI" />
-    <meta name="twitter:creator" content="@DevToolsHubAI" />
-    <meta name="twitter:title" content="${escapeHtml(title)}" />
-    <meta name="twitter:description" content="${escapeHtml(description)}" />
-    <meta name="twitter:image" content="${ogImage}" />
-    <meta name="twitter:image:alt" content="DevTools Hub AI preview image" />
-    <script type="application/ld+json" data-seo-schema="true">${JSON.stringify(schema)}</script>
-  </head>
-  <body>
-    <p>Redirecting to <a href="${to}">${to}</a>.</p>
-  </body>
-</html>
-`;
-};
-
-for (const [from, to] of [
-  ['/privacy-policy', '/privacy'],
-  ['/terms-of-service', '/terms'],
-]) {
-  for (const outputFile of outputFilesForRoute(from)) {
-    fs.mkdirSync(path.dirname(outputFile), { recursive: true });
-    fs.writeFileSync(outputFile, redirectPage(from, to), 'utf8');
-  }
-}
-
-console.log(`Generated static HTML for ${routes.length} routes, 404.html, and redirect aliases.`);
+console.log(`Generated static HTML for ${routes.length} canonical routes and 404.html.`);

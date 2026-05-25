@@ -1,4 +1,4 @@
-import type { ComponentType, ReactNode } from 'react';
+import { useMemo, type ComponentType, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { SEO } from './SEO';
 import { Breadcrumbs } from './Breadcrumbs';
@@ -107,7 +107,7 @@ const getToolContent = (tool: ToolEntry) => {
           'Verify redirect destinations before sharing links.',
         ];
       default:
-        return ['Use this tool to improve your developer workflow.', 'Save time on repetitive formatting tasks.', 'Link related tasks across other DevTools Hub AI utilities.'];
+        return ['Use this tool to improve your developer workflow.', 'Save time on repetitive formatting tasks.', 'Link related tasks across other Zyphoric utilities.'];
     }
   };
 
@@ -212,7 +212,7 @@ const getToolContent = (tool: ToolEntry) => {
             <li>Review the result and copy it, share it, or apply it directly in your workflow.</li>
           </ol>
           <p className="text-slate-400 leading-relaxed mt-4">
-            For advanced workflows, visit our <Link to="/articles" className="text-blue-400 hover:text-blue-300 transition">developer guides</Link> for best practices on using DevTools Hub AI across projects.
+            For advanced workflows, visit our <Link to="/articles" className="text-blue-400 hover:text-blue-300 transition">developer guides</Link> for best practices on using Zyphoric across projects.
           </p>
         </div>
 
@@ -282,7 +282,10 @@ export const ToolShell = ({ title, description, path, icon, iconColor, children 
   const tool = toolByPath(path);
   const seoTitle = tool?.seoTitle ?? title;
   const seoDescription = tool?.seoDescription ?? description;
-  const schema = pageSchema(seoTitle, seoDescription, path, tool);
+  const schema = useMemo(
+    () => pageSchema(seoTitle, seoDescription, path, tool),
+    [seoTitle, seoDescription, path, tool]
+  );
 
   return (
     <div className="max-w-6xl mx-auto">
@@ -291,7 +294,7 @@ export const ToolShell = ({ title, description, path, icon, iconColor, children 
         description={seoDescription}
         canonical={`${site.baseUrl}${path}`}
         schema={schema}
-        image={tool?.image ?? '/icon-512.png'}
+        image={tool?.image ?? '/zyphoric-og-image.png'}
         keywords={tool?.keywords}
       />
       <Breadcrumbs items={[{ label: 'Home', to: '/' }, { label: title, to: path }]} />

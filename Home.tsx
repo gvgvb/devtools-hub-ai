@@ -1,24 +1,46 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { Braces, Sparkles, Zap, LayoutPanelTop, HelpCircle, Search, ArrowRight, Star, AlertTriangle } from 'lucide-react';
 import { SEO } from './SEO';
-import { site, tools, globalFaqs } from './toolsData';
+import {
+  site,
+  tools,
+  globalFaqs,
+  organizationSchema,
+  softwareApplicationSchema,
+  websiteSchema,
+} from './toolsData';
 import { useKeyboardShortcut } from './useKeyboardShortcut';
 
 const featuredTools = tools.filter((tool) => tool.featured).slice(0, 4);
 const trendingTools = tools.filter((tool) => tool.trending).slice(0, 4);
 const latestTools = tools.filter((tool) => tool.latest).slice(0, 4);
+
+const readStoredPathList = (key: string) => {
+  try {
+    const value = localStorage.getItem(key);
+    const parsed = value ? JSON.parse(value) : [];
+    return Array.isArray(parsed) ? parsed.filter((item): item is string => typeof item === 'string') : [];
+  } catch (error) {
+    return [];
+  }
+};
+
 const homeSchema = [
+  organizationSchema,
+  websiteSchema,
+  softwareApplicationSchema,
   {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
-    name: 'DevTools Hub AI — AI-powered developer tools',
+    name: 'Zyphoric — AI-powered developer tools',
     description: 'A modern suite of AI-powered developer utilities for formatting, decoding, debugging, and transforming code locally in your browser.',
     url: `${site.baseUrl}/`,
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: `${site.baseUrl}/?q={search_term_string}`,
-      queryInput: 'required name=search_term_string',
+    isPartOf: {
+      '@id': `${site.baseUrl}/#website`,
+    },
+    publisher: {
+      '@id': `${site.baseUrl}/#organization`,
     },
   },
   {
@@ -42,50 +64,61 @@ export const Home = () => {
   const searchRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
-    const savedRecent = localStorage.getItem('recent_tools');
-    if (savedRecent) setRecentTools(JSON.parse(savedRecent));
-    const savedFavorites = localStorage.getItem('favorite_tools');
-    if (savedFavorites) setFavoriteTools(JSON.parse(savedFavorites));
+    setRecentTools(readStoredPathList('recent_tools').slice(0, 4));
+    setFavoriteTools(readStoredPathList('favorite_tools').slice(0, 4));
   }, []);
 
-  useKeyboardShortcut({ key: 'k', ctrl: true }, () => {
+  const focusSearch = useCallback((event: KeyboardEvent) => {
+    event.preventDefault();
     searchRef.current?.focus();
-  });
+  }, []);
 
-  useKeyboardShortcut({ key: '/', shift: true }, () => {
-    searchRef.current?.focus();
-  });
+  useKeyboardShortcut({ key: 'k', ctrl: true }, focusSearch);
+  useKeyboardShortcut({ key: '/', shift: true }, focusSearch);
 
-  const trackToolUsage = (path: string) => {
+  const trackToolUsage = useCallback((path: string) => {
     setRecentTools((current) => {
       const updated = [path, ...current.filter((item) => item !== path)].slice(0, 4);
-      localStorage.setItem('recent_tools', JSON.stringify(updated));
+      try {
+        localStorage.setItem('recent_tools', JSON.stringify(updated));
+      } catch (error) {
+        // Ignore storage failures; navigation should remain unaffected.
+      }
       return updated;
     });
-  };
+  }, []);
 
-  const toggleFavorite = (path: string) => {
+  const toggleFavorite = useCallback((path: string) => {
     setFavoriteTools((current) => {
       const updated = current.includes(path)
         ? current.filter((item) => item !== path)
         : [path, ...current].slice(0, 4);
-      localStorage.setItem('favorite_tools', JSON.stringify(updated));
+      try {
+        localStorage.setItem('favorite_tools', JSON.stringify(updated));
+        window.dispatchEvent(new Event('zyphoric:favorites-updated'));
+      } catch (error) {
+        // Ignore storage failures; the in-memory favorite state still updates.
+      }
       return updated;
     });
-  };
+  }, []);
 
-  const favoriteToolCards = favoriteTools
-    .map((path) => tools.find((tool) => tool.path === path))
-    .filter(Boolean) as typeof tools;
+  const favoriteToolCards = useMemo(
+    () => favoriteTools
+      .map((path) => tools.find((tool) => tool.path === path))
+      .filter(Boolean) as typeof tools,
+    [favoriteTools]
+  );
 
-  const filteredTools = tools.filter((tool) => {
-    const query = searchQuery.toLowerCase();
-    return (
+  const filteredTools = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+    if (!query) return tools;
+    return tools.filter((tool) => (
       tool.name.toLowerCase().includes(query) ||
       tool.desc.toLowerCase().includes(query) ||
       tool.keywords?.toLowerCase().includes(query)
-    );
-  });
+    ));
+  }, [searchQuery]);
 
   return (
     <div className="w-full max-w-full space-y-24 pb-20">
@@ -97,18 +130,27 @@ export const Home = () => {
         keywords="developer tools, ai developer tools, online json formatter, jwt decoder, regex tester, sql formatter"
       />
 
-      <section className="w-full max-w-full overflow-hidden text-center space-y-8 pt-12">
-        <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 border border-blue-500/20 rounded-full text-blue-400 text-sm font-medium animate-fade-in">
+      <section className="relative isolate w-full max-w-full overflow-hidden py-10 text-center sm:py-16">
+        <div className="absolute inset-x-0 top-0 -z-10 h-full bg-[linear-gradient(to_right,rgba(148,163,184,.08)_1px,transparent_1px),linear-gradient(to_bottom,rgba(148,163,184,.08)_1px,transparent_1px)] bg-[size:44px_44px] [mask-image:linear-gradient(to_bottom,black,transparent_90%)]" aria-hidden="true" />
+        <div className="mx-auto flex max-w-4xl flex-col items-center gap-8">
+        <div className="inline-flex items-center gap-2 rounded-full border border-cyan-400/20 bg-cyan-400/10 px-4 py-2 text-sm font-medium text-cyan-600 shadow-sm shadow-cyan-950/10 dark:text-cyan-300 animate-fade-in">
           <Zap size={16} />
-          <span>Supercharged by AI Llama 3.1</span>
+          <span>Zyphoric command center: local tools, AI when you ask</span>
         </div>
-        <h1 className="mx-auto max-w-full text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-extrabold tracking-tight leading-tight">
-          The Ultimate <span className="block sm:inline bg-gradient-to-r from-blue-400 via-emerald-400 to-purple-500 bg-clip-text text-transparent">Developer Hub</span>
+        <h1 className="mx-auto max-w-5xl text-balance text-4xl font-extrabold leading-[1.05] sm:text-5xl md:text-6xl xl:text-7xl">
+          Turn messy dev chores into <span className="block bg-gradient-to-r from-cyan-400 via-blue-500 to-lime-300 bg-clip-text text-transparent sm:inline">instant browser actions</span>
         </h1>
-        <p className="text-lg md:text-xl text-slate-500 dark:text-slate-300 max-w-3xl mx-auto leading-relaxed">
-          A professional suite of tools designed to help engineers format, decode, refactor, and understand code faster—without leaving the browser.
+        <p className="mx-auto max-w-3xl text-lg leading-relaxed text-slate-600 dark:text-slate-300 md:text-xl">
+          Format JSON, decode JWTs, test regex, clean SQL, compare text, and ask AI for code help in one fast Zyphoric workspace.
         </p>
-        <div className="w-full max-w-xl mx-auto relative group">
+        <div className="grid w-full max-w-3xl grid-cols-1 gap-3 text-left text-sm text-slate-600 dark:text-slate-300 sm:grid-cols-3">
+          {['Local-first utilities', 'PWA-ready workspace', 'Zero tracking'].map((item) => (
+            <div key={item} className="rounded-2xl border border-slate-200 bg-white/70 px-4 py-3 font-semibold shadow-sm dark:border-slate-800 dark:bg-slate-900/70">
+              {item}
+            </div>
+          ))}
+        </div>
+        <div className="group relative mx-auto w-full max-w-2xl">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors" size={20} />
           <input
             ref={searchRef}
@@ -117,8 +159,9 @@ export const Home = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             aria-label="Search tools"
-            className="w-full pl-12 pr-4 py-4 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none transition-all shadow-lg"
+            className="w-full rounded-2xl border border-slate-200 bg-white/90 py-4 pl-12 pr-4 shadow-xl shadow-slate-950/10 outline-none transition-all placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 dark:border-slate-800 dark:bg-slate-950/90"
           />
+        </div>
         </div>
       </section>
 
@@ -199,7 +242,7 @@ export const Home = () => {
         <p className="text-sm uppercase tracking-[0.3em] text-blue-400 mb-3">Build better workflows</p>
         <h2 className="text-4xl font-bold text-slate-950 mb-4">Learn how to use the tools like a pro</h2>
         <p className="text-slate-600 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed">
-          Browse productivity guides, implementation patterns, and the best way to combine DevTools Hub AI utilities for API debugging, encryption, regex validation, and more.
+          Browse productivity guides, implementation patterns, and the best way to combine Zyphoric utilities for API debugging, encryption, regex validation, and more.
         </p>
         <Link to="/articles" className="inline-flex mt-8 items-center gap-3 px-10 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-3xl transition-shadow shadow-lg shadow-blue-600/20">
           View guides and articles
@@ -258,7 +301,11 @@ export const Home = () => {
             {recentTools.length > 0 ? (
               <button onClick={() => {
                 setRecentTools([]);
-                localStorage.removeItem('recent_tools');
+                try {
+                  localStorage.removeItem('recent_tools');
+                } catch (error) {
+                  // Ignore storage failures; clearing UI state still works.
+                }
               }} className="text-sm text-slate-500 hover:text-blue-500 transition">
                 Clear history
               </button>

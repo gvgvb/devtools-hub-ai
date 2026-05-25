@@ -70,6 +70,7 @@ export const BugFixer = () => {
         <textarea
           value={code}
           onChange={(e) => setCode(e.target.value)}
+          aria-label="Code to debug"
           className="w-full h-64 bg-slate-950 border border-slate-800 rounded-2xl p-4 font-mono text-sm text-red-300 focus:ring-2 focus:ring-red-500 outline-none resize-none mb-4"
           placeholder="// Paste buggy code here..."
         />
@@ -94,7 +95,7 @@ export const BugFixer = () => {
         <div className="bg-slate-900 border border-slate-800 rounded-3xl p-8">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-xl font-semibold text-emerald-400">Solution</h3>
-            <CopyButton value={solution} label="Copy AI solution" onCopy={() => showToast('Solution copied!')} />
+            <CopyButton value={solution} label="Copy AI solution" />
           </div>
           <div className="prose prose-invert max-w-none text-slate-300 whitespace-pre-wrap leading-relaxed">
             {solution}

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { ToolShell } from './ToolShell';
 import { CopyButton } from './CopyButton';
 import { useKeyboardShortcut } from './useKeyboardShortcut';
@@ -9,6 +9,7 @@ export const UnitConverter = () => {
   const [px, setPx] = useState('16');
   const [rem, setRem] = useState('1');
   const [baseSize, setBaseSize] = useState('16');
+  const [activeUnit, setActiveUnit] = useState<'px' | 'rem'>('px');
   const [hex, setHex] = useState('#3b82f6');
   const [rgb, setRgb] = useState('rgb(59, 130, 246)');
   const { showToast } = useToast();
@@ -16,16 +17,37 @@ export const UnitConverter = () => {
   // PX to REM logic
   const handlePxChange = (val: string) => {
     setPx(val);
-    if (!isNaN(Number(val))) {
-      setRem((Number(val) / Number(baseSize)).toString());
+    setActiveUnit('px');
+    const pxValue = Number(val);
+    const baseValue = Number(baseSize);
+    if (Number.isFinite(pxValue) && baseValue > 0) {
+      setRem((pxValue / baseValue).toString());
     }
   };
 
   const handleRemChange = (val: string) => {
     setRem(val);
-    if (!isNaN(Number(val))) {
-      setPx((Number(val) * Number(baseSize)).toString());
+    setActiveUnit('rem');
+    const remValue = Number(val);
+    const baseValue = Number(baseSize);
+    if (Number.isFinite(remValue) && baseValue > 0) {
+      setPx((remValue * baseValue).toString());
     }
+  };
+
+  const handleBaseSizeChange = (val: string) => {
+    setBaseSize(val);
+    const nextBase = Number(val);
+    if (!Number.isFinite(nextBase) || nextBase <= 0) return;
+
+    if (activeUnit === 'px') {
+      const pxValue = Number(px);
+      if (Number.isFinite(pxValue)) setRem((pxValue / nextBase).toString());
+      return;
+    }
+
+    const remValue = Number(rem);
+    if (Number.isFinite(remValue)) setPx((remValue * nextBase).toString());
   };
 
   // Color Conversion logic
@@ -104,7 +126,7 @@ export const UnitConverter = () => {
           </div>
           <div className="pt-4 border-t border-slate-800">
              <label className="text-xs text-slate-500">Base Font Size (default 16px)</label>
-             <input type="range" min="8" max="32" value={baseSize} onChange={(e) => setBaseSize(e.target.value)} className="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-yellow-500 mt-2" />
+             <input type="range" min="8" max="32" value={baseSize} onChange={(e) => handleBaseSizeChange(e.target.value)} className="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-yellow-500 mt-2" />
           </div>
         </div>
 
@@ -130,7 +152,7 @@ export const UnitConverter = () => {
               <label className="text-xs font-bold text-slate-500 uppercase">RGB Result</label>
               <div className="flex items-center justify-between w-full bg-slate-950 border border-slate-800 rounded-xl p-4 font-mono text-blue-400">
                 <span>{rgb}</span>
-                <CopyButton value={rgb} label="Copy RGB" onCopy={() => showToast('RGB copied!')} />
+                <CopyButton value={rgb} label="Copy RGB" />
               </div>
             </div>
           </div>

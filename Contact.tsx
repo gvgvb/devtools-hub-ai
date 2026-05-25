@@ -3,14 +3,14 @@ import { ArrowRight, Mail, MessageCircle, ShieldCheck } from 'lucide-react';
 import { SEO } from './SEO';
 import { site } from './toolsData';
 
-const supportEmail = 'support@devtools-hubpro.netlify.app';
+const supportEmail = 'support@zyphoric.netlify.app';
 const description =
-  'Contact DevTools Hub AI for product support, privacy questions, bug reports, partnership requests, and general developer tool feedback.';
+  'Contact Zyphoric for product support, privacy questions, bug reports, partnership requests, and general developer tool feedback.';
 
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'ContactPage',
-  name: 'Contact DevTools Hub AI',
+  name: 'Contact Zyphoric',
   description,
   url: `${site.baseUrl}/contact`,
   mainEntity: {
@@ -25,16 +25,16 @@ export const Contact = () => {
   return (
     <article className="mx-auto max-w-5xl space-y-10">
       <SEO
-        title="Contact DevTools Hub AI"
+        title="Contact Zyphoric"
         description={description}
         canonical={`${site.baseUrl}/contact`}
         schema={schema}
-        keywords="contact DevTools Hub AI, developer tools support, privacy contact, bug report"
+        keywords="contact Zyphoric, developer tools support, privacy contact, bug report"
       />
 
       <header className="space-y-5 border-b border-slate-200 pb-8 dark:border-slate-800">
         <p className="text-sm font-semibold uppercase tracking-[0.24em] text-blue-500">Contact</p>
-        <h1 className="text-4xl font-bold tracking-tight text-slate-950 dark:text-white md:text-5xl">Contact DevTools Hub AI</h1>
+        <h1 className="text-4xl font-bold text-slate-950 dark:text-white md:text-5xl">Contact Zyphoric</h1>
         <p className="text-lg leading-relaxed text-slate-600 dark:text-slate-300">{description}</p>
       </header>
 
@@ -46,7 +46,7 @@ export const Contact = () => {
             Use email for support, bug reports, privacy requests, policy questions, partnership inquiries, or launch feedback.
           </p>
           <a
-            href={`mailto:${supportEmail}?subject=DevTools%20Hub%20AI%20support`}
+            href={`mailto:${supportEmail}?subject=Zyphoric%20support`}
             className="mt-6 inline-flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white transition hover:bg-blue-700"
           >
             {supportEmail}

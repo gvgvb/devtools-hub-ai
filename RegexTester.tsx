@@ -86,7 +86,7 @@ export const RegexTester = () => {
               <div className="flex justify-between items-center mb-2">
                 <label className="text-sm font-medium text-slate-400 block uppercase">Regular Expression</label>
                 {regex && (
-                  <CopyButton value={regex} label="Copy regex" onCopy={copyRegex} />
+                  <CopyButton value={regex} label="Copy regex" />
                 )}
               </div>
               <input

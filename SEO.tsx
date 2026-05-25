@@ -1,17 +1,21 @@
 import { useEffect } from 'react';
+import { site } from './toolsData';
 
 interface SEOProps {
   title: string;
   description: string;
   canonical?: string;
-  schema?: object;
+  schema?: object | object[];
   image?: string;
   keywords?: string;
   robots?: string;
 }
 
 const setMetaTag = (attr: 'name' | 'property', key: string, content: string) => {
-  let element = document.head.querySelector(`meta[${attr}="${key}"]`) as HTMLMetaElement | null;
+  const elements = Array.from(document.head.querySelectorAll(`meta[${attr}="${key}"]`)) as HTMLMetaElement[];
+  let element = elements[0] ?? null;
+  elements.slice(1).forEach((duplicate) => duplicate.remove());
+
   if (!element) {
     element = document.createElement('meta');
     element.setAttribute(attr, key);
@@ -21,12 +25,16 @@ const setMetaTag = (attr: 'name' | 'property', key: string, content: string) => 
 };
 
 const removeMetaTag = (attr: 'name' | 'property', key: string) => {
-  const element = document.head.querySelector(`meta[${attr}="${key}"]`);
-  if (element) element.remove();
+  document.head
+    .querySelectorAll(`meta[${attr}="${key}"]`)
+    .forEach((element) => element.remove());
 };
 
 const setLinkTag = (rel: string, href: string) => {
-  let element = document.head.querySelector(`link[rel="${rel}"]`) as HTMLLinkElement | null;
+  const elements = Array.from(document.head.querySelectorAll(`link[rel="${rel}"]`)) as HTMLLinkElement[];
+  let element = elements[0] ?? null;
+  elements.slice(1).forEach((duplicate) => duplicate.remove());
+
   if (!element) {
     element = document.createElement('link');
     element.setAttribute('rel', rel);
@@ -43,35 +51,49 @@ const removeManagedSchemaScripts = () => {
 
 export const SEO = ({ title, description, canonical, schema, image, keywords, robots }: SEOProps) => {
   useEffect(() => {
-    const pageTitle = title.includes('DevTools Hub AI') ? title : `${title} | DevTools Hub AI`;
+    const siteName = site.name || 'Zyphoric';
+    const pageTitle = title.includes(siteName) ? title : `${title} | ${siteName}`;
+    const pageUrl = canonical
+      ? new URL(canonical, site.baseUrl).toString()
+      : new URL(window.location.pathname, site.baseUrl).toString();
     const resolvedImage = image
-      ? new URL(image, window.location.origin).toString()
-      : new URL('/icon-512.png', window.location.origin).toString();
+      ? new URL(image, site.baseUrl).toString()
+      : new URL('/zyphoric-og-image.png', site.baseUrl).toString();
+    const resolvedSocialImage = image
+      ? resolvedImage
+      : new URL('/zyphoric-social-preview.png', site.baseUrl).toString();
     document.title = pageTitle;
+    setMetaTag('name', 'application-name', siteName);
+    setMetaTag('name', 'apple-mobile-web-app-title', siteName);
     setMetaTag('name', 'description', description);
-    setMetaTag('name', 'theme-color', '#0f172a');
-    setMetaTag('name', 'robots', robots ?? 'index, follow');
+    setMetaTag('name', 'theme-color', '#0f2549');
+    setMetaTag('name', 'color-scheme', 'dark light');
+    setMetaTag('name', 'robots', robots ?? 'index, follow, max-image-preview:large');
     if (keywords) setMetaTag('name', 'keywords', keywords);
     else removeMetaTag('name', 'keywords');
-    if (canonical) setLinkTag('canonical', canonical);
+    setLinkTag('canonical', pageUrl);
 
-    const pageUrl = canonical ?? window.location.href;
     setMetaTag('property', 'og:title', pageTitle);
     setMetaTag('property', 'og:description', description);
     setMetaTag('property', 'og:type', 'website');
     setMetaTag('property', 'og:url', pageUrl);
-    setMetaTag('property', 'og:site_name', 'DevTools Hub AI');
+    setMetaTag('property', 'og:site_name', siteName);
     setMetaTag('property', 'og:locale', 'en_US');
     setMetaTag('property', 'og:image', resolvedImage);
-    setMetaTag('property', 'og:image:alt', 'DevTools Hub AI preview image');
+    setMetaTag('property', 'og:image:secure_url', resolvedImage);
+    setMetaTag('property', 'og:image:type', 'image/png');
+    setMetaTag('property', 'og:image:width', '1200');
+    setMetaTag('property', 'og:image:height', '630');
+    setMetaTag('property', 'og:image:alt', `${siteName} preview image`);
 
     setMetaTag('name', 'twitter:card', 'summary_large_image');
-    setMetaTag('name', 'twitter:site', '@DevToolsHubAI');
-    setMetaTag('name', 'twitter:creator', '@DevToolsHubAI');
+    removeMetaTag('name', 'twitter:site');
+    removeMetaTag('name', 'twitter:creator');
+    setMetaTag('name', 'twitter:url', pageUrl);
     setMetaTag('name', 'twitter:title', pageTitle);
     setMetaTag('name', 'twitter:description', description);
-    setMetaTag('name', 'twitter:image', resolvedImage);
-    setMetaTag('name', 'twitter:image:alt', 'DevTools Hub AI preview image');
+    setMetaTag('name', 'twitter:image', resolvedSocialImage);
+    setMetaTag('name', 'twitter:image:alt', `${siteName} preview image`);
 
     removeManagedSchemaScripts();
     if (schema) {

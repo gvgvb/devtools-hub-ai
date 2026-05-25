@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { SEO } from './SEO';
 import { Sparkles, Book, ArrowRight } from 'lucide-react';
-import { site } from './toolsData';
+import { pageSchema, site } from './toolsData';
 
 const articles = [
   {
@@ -26,14 +26,20 @@ const articles = [
   },
 ];
 
+const articlesDescription =
+  'Read practical developer guides for JWT debugging, JSON formatting, SQL cleanup, regex validation, and AI-assisted code review workflows.';
+
+const articlesSchema = pageSchema('Developer Guides & Articles', articlesDescription, '/articles');
+
 export const Articles = () => {
   return (
     <div className="max-w-6xl mx-auto space-y-10">
       <SEO
         title="Developer Guides & Articles"
-        description="Read practical developer guides for JWT debugging, JSON formatting, SQL cleanup, regex validation, and AI-assisted code review workflows."
+        description={articlesDescription}
         canonical={`${site.baseUrl}/articles`}
-        image="/icon-512.png"
+        schema={articlesSchema}
+        image="/zyphoric-og-image.png"
         keywords="developer guides, coding best practices, ai developer tools, json formatting guide, jwt debugging"
       />
       <div className="rounded-[2rem] border border-slate-800 bg-slate-950/80 p-10 text-center">
@@ -42,7 +48,7 @@ export const Articles = () => {
         </div>
         <h1 className="text-4xl md:text-5xl font-bold">Developer guides and workflow articles</h1>
         <p className="mt-4 text-slate-400 leading-relaxed max-w-2xl mx-auto">
-          Practical workflows and recommended ways to combine DevTools Hub AI utilities for faster debugging, safer tokens, cleaner payloads, and more reliable code reviews.
+          Practical workflows and recommended ways to combine Zyphoric utilities for faster debugging, safer tokens, cleaner payloads, and more reliable code reviews.
         </p>
       </div>
 
@@ -70,7 +76,7 @@ export const Articles = () => {
       <section className="rounded-[2rem] border border-slate-800 bg-slate-950/80 p-10">
         <h2 className="text-3xl font-bold mb-4">Why these guides matter</h2>
         <p className="text-slate-400 leading-relaxed">
-          These resources are designed to help you get more value from DevTools Hub AI by linking tool workflows, improving debug cycles, and making your front-end and backend developer experience smoother.
+          These resources are designed to help you get more value from Zyphoric by linking tool workflows, improving debug cycles, and making your front-end and backend developer experience smoother.
         </p>
         <ul className="mt-8 grid gap-4 sm:grid-cols-2">
           {[

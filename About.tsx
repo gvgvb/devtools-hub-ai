@@ -4,12 +4,12 @@ import { SEO } from './SEO';
 import { site, tools } from './toolsData';
 
 const description =
-  'Learn about DevTools Hub AI, a browser-first developer toolkit for JSON formatting, JWT decoding, regex testing, SQL formatting, and AI-assisted code workflows.';
+  'Learn about Zyphoric, a browser-first developer workspace for JSON formatting, JWT decoding, regex testing, SQL formatting, and AI-assisted code workflows.';
 
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'AboutPage',
-  name: 'About DevTools Hub AI',
+  name: 'About Zyphoric',
   description,
   url: `${site.baseUrl}/about`,
   mainEntity: {
@@ -41,17 +41,17 @@ export const About = () => {
   return (
     <article className="mx-auto max-w-6xl space-y-12">
       <SEO
-        title="About DevTools Hub AI"
+        title="About Zyphoric"
         description={description}
         canonical={`${site.baseUrl}/about`}
         schema={schema}
-        keywords="about DevTools Hub AI, developer tools, AI developer utilities, browser developer tools"
+        keywords="about Zyphoric, developer tools, AI developer utilities, browser developer tools"
       />
 
       <header className="grid gap-8 border-b border-slate-200 pb-10 dark:border-slate-800 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
         <div className="space-y-5">
           <p className="text-sm font-semibold uppercase tracking-[0.24em] text-blue-500">About</p>
-          <h1 className="text-4xl font-bold tracking-tight text-slate-950 dark:text-white md:text-5xl">About DevTools Hub AI</h1>
+          <h1 className="text-4xl font-bold text-slate-950 dark:text-white md:text-5xl">About Zyphoric</h1>
           <p className="text-lg leading-relaxed text-slate-600 dark:text-slate-300">{description}</p>
         </div>
         <div className="rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-950/80">
@@ -75,7 +75,7 @@ export const About = () => {
         <div className="space-y-4">
           <h2 className="text-3xl font-bold text-slate-950 dark:text-white">Why this exists</h2>
           <p className="leading-relaxed text-slate-600 dark:text-slate-300">
-            Developers often switch between small utilities, docs, scripts, and AI chats just to inspect a payload or understand a snippet. DevTools Hub AI brings those recurring tasks into one clean, linkable interface.
+            Developers often switch between small utilities, docs, scripts, and AI chats just to inspect a payload or understand a snippet. Zyphoric brings those recurring tasks into one clean, linkable interface.
           </p>
           <p className="leading-relaxed text-slate-600 dark:text-slate-300">
             The product focuses on usefulness over noise: clear tool pages, practical examples, related links, and legal transparency for public launch.

@@ -1,7 +1,7 @@
 {
   "site": {
-    "name": "DevTools Hub AI",
-    "baseUrl": "https://devtools-hubpro.netlify.app"
+    "name": "Zyphoric",
+    "baseUrl": "https://zyphoric.netlify.app"
   },
   "tools": [
     {
@@ -9,7 +9,7 @@
       "desc": "Beautify and validate JSON data.",
       "path": "/tools/json",
       "category": "Standard",
-      "seoTitle": "Online JSON Formatter & Validator | DevTools Hub AI",
+      "seoTitle": "Online JSON Formatter & Validator | Zyphoric",
       "seoDescription": "Format, validate, and prettify JSON instantly with the free online JSON formatter for developers and API debugging.",
       "keywords": "json formatter, json validator, pretty print json, online json formatter",
       "featured": true,
@@ -24,7 +24,7 @@
       "desc": "Decode JWT tokens locally.",
       "path": "/tools/jwt",
       "category": "Standard",
-      "seoTitle": "Free JWT Decoder Online | DevTools Hub AI",
+      "seoTitle": "Free JWT Decoder Online | Zyphoric",
       "seoDescription": "Decode JSON Web Tokens securely in your browser, inspect claims, and verify token structure without sending data to a server.",
       "keywords": "jwt decoder, jwt token decoder, decode jwt online, jwt inspector",
       "featured": true,
@@ -39,7 +39,7 @@
       "desc": "Understand complex code logic.",
       "path": "/ai/explainer",
       "category": "AI",
-      "seoTitle": "AI Code Explainer for Developers | DevTools Hub AI",
+      "seoTitle": "AI Code Explainer for Developers | Zyphoric",
       "seoDescription": "Paste code and get instant AI-powered explanations, logic summaries, and clearer insights for faster debugging and code reviews.",
       "keywords": "ai code explainer, code explanation tool, explain code online, developer ai tool",
       "featured": true,
@@ -54,7 +54,7 @@
       "desc": "Fix bugs and optimize code snippets.",
       "path": "/ai/bug-fixer",
       "category": "AI",
-      "seoTitle": "AI Bug Fixer Online | DevTools Hub AI",
+      "seoTitle": "AI Bug Fixer Online | Zyphoric",
       "seoDescription": "Drop in buggy code and let our AI suggest fixes, improvements, and safer refactors to speed up your debugging workflow.",
       "keywords": "ai bug fixer, fix code bugs, code debugging ai, online code fix tool",
       "trending": true,
@@ -68,7 +68,7 @@
       "desc": "Convert code between languages.",
       "path": "/ai/converter",
       "category": "AI",
-      "seoTitle": "AI Code Converter Online | DevTools Hub AI",
+      "seoTitle": "AI Code Converter Online | Zyphoric",
       "seoDescription": "Convert code between languages instantly with AI, from JavaScript to Python, TypeScript, and more, while preserving behavior and structure.",
       "keywords": "ai code converter, convert code online, code translation tool, language converter",
       "latest": true,
@@ -82,7 +82,7 @@
       "desc": "Generate regex from description.",
       "path": "/ai/regex-gen",
       "category": "AI",
-      "seoTitle": "AI Regex Generator | DevTools Hub AI",
+      "seoTitle": "AI Regex Generator | Zyphoric",
       "seoDescription": "Create accurate regular expressions from plain-language descriptions and test them instantly with sample input.",
       "keywords": "ai regex generator, generate regex online, regex from description, regex assistant",
       "latest": true,
@@ -96,7 +96,7 @@
       "desc": "Test expressions in real-time.",
       "path": "/tools/regex",
       "category": "Standard",
-      "seoTitle": "Online Regex Tester | DevTools Hub AI",
+      "seoTitle": "Online Regex Tester | Zyphoric",
       "seoDescription": "Test and debug regular expressions instantly with sample input, highlighted matches, and real-time feedback.",
       "keywords": "regex tester, regex debugger, test regular expressions, online regex tool",
       "faqs": [
@@ -109,7 +109,7 @@
       "desc": "Tidy up SQL queries instantly.",
       "path": "/tools/sql",
       "category": "Standard",
-      "seoTitle": "Online SQL Formatter | DevTools Hub AI",
+      "seoTitle": "Online SQL Formatter | Zyphoric",
       "seoDescription": "Format and clean SQL queries instantly for readability, debugging, and database development workflows.",
       "keywords": "sql formatter, format sql query, beautify sql online, sql prettifier",
       "trending": true,
@@ -123,7 +123,7 @@
       "desc": "Compare two texts side by side.",
       "path": "/tools/diff",
       "category": "Standard",
-      "seoTitle": "Text Diff Viewer Online | DevTools Hub AI",
+      "seoTitle": "Text Diff Viewer Online | Zyphoric",
       "seoDescription": "Compare two pieces of text side by side with highlighted differences for code, config, or document review.",
       "keywords": "diff viewer, compare text online, text diff tool, side by side diff",
       "faqs": [
@@ -136,7 +136,7 @@
       "desc": "Parse and explain cron schedules in plain English.",
       "path": "/tools/cron",
       "category": "Standard",
-      "seoTitle": "Cron Expression Parser | DevTools Hub AI",
+      "seoTitle": "Cron Expression Parser | Zyphoric",
       "seoDescription": "Decode cron expressions and understand schedule timing instantly with a human-readable cron parser.",
       "keywords": "cron parser, parse cron expression, cron schedule online, cron explanation",
       "latest": true,
@@ -150,7 +150,7 @@
       "desc": "Encode and decode Base64 data.",
       "path": "/tools/base64",
       "category": "Standard",
-      "seoTitle": "Base64 Encode/Decode Tool | DevTools Hub AI",
+      "seoTitle": "Base64 Encode/Decode Tool | Zyphoric",
       "seoDescription": "Encode and decode Base64 strings securely in your browser. Perfect for debugging tokens and text transformations.",
       "keywords": "base64 encoder decoder, base64 converter, decode base64 online, encode base64 online",
       "faqs": [
@@ -163,7 +163,7 @@
       "desc": "Pixels, REM, and Color conversions.",
       "path": "/tools/unit-converter",
       "category": "Standard",
-      "seoTitle": "Online Unit Converter for Developers | DevTools Hub AI",
+      "seoTitle": "Online Unit Converter for Developers | Zyphoric",
       "seoDescription": "Convert units such as pixels, rem, and colors instantly with a developer-friendly conversion tool.",
       "keywords": "unit converter, pixel to rem converter, color converter, online unit conversion",
       "faqs": [
@@ -176,7 +176,7 @@
       "desc": "Generate secure passwords locally.",
       "path": "/tools/password-gen",
       "category": "Standard",
-      "seoTitle": "Secure Password Generator | DevTools Hub AI",
+      "seoTitle": "Secure Password Generator | Zyphoric",
       "seoDescription": "Create strong passwords instantly with a privacy-first generator that runs locally in your browser.",
       "keywords": "password generator, secure password tool, generate password online, random password generator",
       "latest": true,
@@ -190,7 +190,7 @@
       "desc": "Encode and decode URLs safely.",
       "path": "/tools/url",
       "category": "Standard",
-      "seoTitle": "URL Encoder/Decoder Online | DevTools Hub AI",
+      "seoTitle": "URL Encoder/Decoder Online | Zyphoric",
       "seoDescription": "Encode and decode URLs securely in your browser for safe link sharing and debugging.",
       "keywords": "url encoder decoder, encode url online, decode url online, url tool",
       "faqs": [
@@ -202,6 +202,6 @@
   "faqs": [
     { "q": "Is my data safe?", "a": "Absolutely. All processing for non-AI tools (JSON, Base64, JWT) happens locally in your browser. Your data never touches our servers." },
     { "q": "What AI model is powering the tools?", "a": "We use Llama 3.1 via the Groq API." },
-    { "q": "Can I use DevTools Hub AI offline?", "a": "Yes! Since it's a PWA, you can install it on your device and access most tools without an internet connection." }
+    { "q": "Can I use Zyphoric offline?", "a": "Yes! Since it's a PWA, you can install it on your device and access most tools without an internet connection." }
   ]
 }
